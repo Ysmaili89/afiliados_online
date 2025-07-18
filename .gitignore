@@ -1,0 +1,50 @@
+# Entornos virtuales
+env/
+venv/
+ENV/
+.venv/
+
+# Archivos Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Configuración de editor
+.vscode/
+.idea/
+*.swp
+
+# Logs y bases de datos locales
+*.log
+*.sqlite3
+instance/
+*.db
+
+# Archivos temporales
+*.bak
+*.tmp
+
+# Archivos de compilación
+build/
+dist/
+*.egg-info/
+
+# Mac / Linux / Windows basura
+.DS_Store
+Thumbs.db
+
+# Archivos de entorno (NO subir claves)
+.env
+.env.*
+
+# Coverage y pruebas
+htmlcov/
+.tox/
+.coverage
+.cache/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+
+# Archivos subidos o generados
+uploads/

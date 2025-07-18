@@ -1,0 +1,171 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Affiliate Statistics - Online Affiliates{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 text-primary fw-bold">Affiliate Statistics</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Affiliate Summary</h4>
+        {# Puedes añadir un botón para añadir un nuevo afiliado si tienes un formulario para ello #}
+        {# <a href="{{ url_for('admin.admin_add_affiliate') }}" class="btn btn-primary btn-sm">Añadir Nuevo Afiliado</a> #}
+    </div>
+    <div class="card-body">
+        {% if afiliados_data %}
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Referral Link</th>
+                        <th>Registration Date</th>
+                        <th>Active</th>
+                        <th>Total Commissions (Model)</th>
+                        <th>Total Clicks</th>
+                        <th>Total Registrations</th>
+                        <th>Total Sales</th>
+                        <th>Total Commission Generated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for afiliado in afiliados_data %}
+                    <tr>
+                        <td>{{ afiliado.id }}</td>
+                        <td>{{ afiliado.nombre }}</td>
+                        <td>{{ afiliado.email }}</td>
+                        <td><a href="{{ afiliado.enlace_referido }}" target="_blank" rel="noopener noreferrer">{{ afiliado.enlace_referido }}</a></td>
+                        <td>{{ moment(afiliado.fecha_registro).format('L') }}</td>
+                        <td>
+                            {% if afiliado.activo %}
+                                <span class="badge bg-success">Yes</span>
+                            {% else %}
+                                <span class="badge bg-danger">No</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ afiliado.comisiones_totales_modelo | format_currency }}</td>
+                        <td><span class="badge bg-primary">{{ afiliado.total_clics }}</span></td>
+                        <td><span class="badge bg-success">{{ afiliado.total_registros }}</span></td>
+                        <td><span class="badge bg-info">{{ afiliado.total_ventas }}</span></td>
+                        <td><span class="badge bg-warning text-dark">{{ afiliado.total_comision_generada | format_currency }}</span></td>
+                        <td>
+                            {# Puedes añadir botones para ver detalles, editar o desactivar/activar afiliado #}
+                            {# <a href="{{ url_for('admin.admin_edit_affiliate', afiliado_id=afiliado.id) }}" class="btn btn-sm btn-outline-primary me-1" title="Editar Afiliado"><i class="fas fa-edit"></i></a> #}
+                            {# <form action="{{ url_for('admin.admin_toggle_affiliate_status', afiliado_id=afiliado.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-sm {% if afiliado.activo %}btn-outline-danger{% else %}btn-outline-success{% endif %}" title="{% if afiliado.activo %}Desactivar{% else %}Activar{% endif %}">
+                                    <i class="fas {% if afiliado.activo %}fa-times-circle{% else %}fa-check-circle{% endif %}"></i>
+                                </button>
+                            </form> #}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            No affiliates registered in the system yet.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{# Optional: Section for daily statistics or charts #}
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Clicks by Day (Last 7 Days)</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="clicksChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Sales and Commissions (Last 7 Days)</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="salesCommissionChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts_extra %}
+{# If you want to add charts, you can include Chart.js here and the script to render them #}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Datos de ejemplo (deberías pasar estos desde Flask usando render_template)
+        const dailyClicks = {
+            labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+            datasets: [{
+                label: 'Clicks',
+                data: [12, 19, 3, 5, 2, 3, 7],
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const dailySalesCommissions = {
+            labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+            datasets: [
+                {
+                    label: 'Sales',
+                    data: [2, 3, 1, 0, 1, 2, 1],
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Commissions',
+                    data: [25.00, 45.50, 10.00, 0.00, 15.00, 30.00, 12.50],
+                    backgroundColor: 'rgba(255, 206, 86, 0.5)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        const clicksCtx = document.getElementById('clicksChart');
+        if (clicksCtx) {
+            new Chart(clicksCtx, {
+                type: 'bar',
+                data: dailyClicks,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        const salesCommissionCtx = document.getElementById('salesCommissionChart');
+        if (salesCommissionCtx) {
+            new Chart(salesCommissionCtx, {
+                type: 'line',
+                data: dailySalesCommissions,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}

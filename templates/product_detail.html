@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.nombre | e }} - Análisis y Opiniones{% endblock %}
+
+{% block meta_description %}
+    Análisis completo de {{ product.nombre | e }}: descubre sus ventajas, desventajas, opiniones de usuarios y respuestas a preguntas frecuentes. ¿Es para ti? Averígualo aquí.
+{% endblock %}
+
+{% block meta_keywords %}
+    {{ product.nombre | lower | e }}, análisis, review, pros y contras, opiniones, comprar {{ product.nombre | lower | e }}, {{ product.programa_afiliados | lower | e }}, comparativa
+{% endblock %}
+
+{% block content %}
+<div class="container my-5" role="main">
+    <article itemscope itemtype="https://schema.org/Product">
+        <div class="row">
+            <div class="col-md-5 mb-4 mb-md-0"> {# Added mb-4 for spacing on small screens #}
+                {% if product.imagen %}
+                <figure class="product-image-container overflow-hidden rounded shadow-sm"> {# Applied styling directly here #}
+                    <img src="{{ product.imagen | e }}" class="img-fluid" alt="Imagen de {{ product.nombre | e }}" itemprop="image" loading="lazy">
+                    <figcaption class="visually-hidden">Imagen de producto de {{ product.nombre | e }}</figcaption> {# More descriptive #}
+                </figure>
+                {% endif %}
+            </div>
+            <div class="col-md-7">
+                <h1 class="mb-3 display-5 fw-bold" itemprop="name">{{ product.nombre | e }}</h1> {# Increased font size and weight #}
+                <p class="fs-4 text-primary fw-bold" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                    <span itemprop="priceCurrency" content="USD" aria-label="Moneda dólar americano">$</span><span itemprop="price">{{ "%.2f"|format(product.precio) }}</span>
+                </p>
+
+                {% if product.comision_porcentaje %}
+                <div class="alert alert-success d-flex align-items-center mb-4" role="alert"> {# Added mb-4 for spacing #}
+                    <i class="fas fa-hand-holding-usd me-2" aria-hidden="true"></i>
+                    <span>
+                        Comisión para afiliados: <strong>{{ product.comision_porcentaje | e }}</strong> (programa: {{ product.programa_afiliados | e }})
+                    </span>
+                </div>
+                {% endif %}
+
+                <section class="mb-4" itemprop="description">
+                    <h2 class="h4">Análisis Detallado</h2>
+                    <p>{{ product.descripcion | e }}</p>
+                </section>
+
+                {% if product.ventajas %}
+                <section class="mb-4" aria-labelledby="pros-title">
+                    <h2 class="h4 text-success" id="pros-title">Pros <i class="fas fa-check-circle ms-1" aria-hidden="true"></i></h2>
+                    <ul class="list-group list-group-flush">
+                        {% for ventaja in product.ventajas %}
+                        <li class="list-group-item">{{ ventaja | e }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+                {% endif %}
+
+                {% if product.desventajas %}
+                <section class="mb-4" aria-labelledby="cons-title">
+                    <h2 class="h4 text-danger" id="cons-title">Contras <i class="fas fa-times-circle ms-1" aria-hidden="true"></i></h2>
+                    <ul class="list-group list-group-flush">
+                        {% for desventaja in product.desventajas %}
+                        <li class="list-group-item">{{ desventaja | e }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if product.opiniones %}
+        <section class="mt-5" aria-labelledby="user-reviews">
+            <h2 class="h4 border-bottom pb-2 mb-3" id="user-reviews">Opiniones de Usuarios <i class="fas fa-comments text-info ms-2" aria-hidden="true"></i></h2> {# Added border-bottom and spacing #}
+            <ul class="list-group list-group-flush"> {# Added list-group-flush #}
+                {% for opinion in product.opiniones %}
+                <li class="list-group-item" aria-label="Opinión de usuario" itemprop="review">{{ opinion | e }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        {% if product.preguntas_frecuentes %}
+        <section class="mt-5" aria-labelledby="faq-title">
+            <h2 class="h4 border-bottom pb-2 mb-3" id="faq-title">Preguntas Frecuentes (FAQ) <i class="fas fa-question-circle text-warning ms-2" aria-hidden="true"></i></h2> {# Added border-bottom and spacing #}
+            <div class="accordion" id="faqAccordion">
+                {% for faq in product.preguntas_frecuentes %}
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="heading{{ loop.index }}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
+                            {{ faq.Q | e }}
+                        </button>
+                    </h3>
+                    <div id="collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            {{ faq.A | e }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <div class="text-center my-5">
+            <a href="{{ product.link | e }}" class="btn btn-success btn-lg px-5 animated-button" target="_blank" rel="sponsored noopener nofollow" aria-label="Comprar {{ product.nombre | e }} en el sitio del afiliado"> {# Increased px-4 to px-5 #}
+                <i class="fas fa-shopping-cart me-2" aria-hidden="true"></i>Comprar {{ product.nombre | e }}
+            </a>
+            <p class="mt-2 text-muted small">* Serás redirigido al sitio del afiliado. Afiliados Online puede recibir una comisión sin costo adicional para ti.</p>
+        </div>
+    </article>
+</div>
+{% endblock %}

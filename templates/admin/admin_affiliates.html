@@ -1,0 +1,72 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Manage Affiliates - Online Affiliates{% endblock %} {# Corrected: Gestión de Afiliados -> Manage Affiliates #}
+
+{% block content %} {# Corrected: contenido del bloque -> block content #}
+<h1 class="mb-4 text-primary fw-bold">Manage Affiliates</h1> {# Corrected: Gestión de Afiliados -> Manage Affiliates #}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="{{ url_for('admin.admin_add_affiliate') }}" class="btn btn-success">
+        <i class="fas fa-plus"></i> Add New Affiliate {# Corrected: Añadir Nuevo Afiliado -> Add New Affiliate #}
+    </a> {# Corrected: </un> -> </a> #}
+</div> {# Corrected: </Div> -> </div> #}
+
+{% with messages = get_flashed_messages(with_categories=true) %} {# Corrected: {% con mensajes = get_flashed_messages(with_categories=true) %} -> {% with messages = get_flashed_messages(with_categories=true) %} #}
+    {% if messages %} {# Corrected: {% si mensajes %} -> {% if messages %} #}
+        {% for category, message in messages %} {# Corrected: {% para categoría, mensaje en mensajes %} -> {% for category, message in messages %} #}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }} {# Corrected: {{ mensaje }} -> {{ message }} #}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div> {# Corrected: </Div> -> </div> #}
+        {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+    {% endif %}
+{% endwith %}
+
+{% if affiliates %}
+<div class="table-responsive"> {# Corrected: tabla de respuesta -> table-responsive #}
+    <table class="table table-hover table-striped">
+        <thead class="table-dark">
+            <tr> {# Corrected: <Tr> -> <tr> #}
+                <th>ID</th>
+                <th>Name</th> {# Corrected: Nombre -> Name #}
+                <th>Email</th>
+                <th>Referral Link</th> {# Corrected: Enlace de Referido -> Referral Link #}
+                <th>Active</th> {# Corrected: Activo -> Active #}
+                <th>Actions</th> {# Corrected: Acciones -> Actions #}
+            </tr> {# Corrected: </Tr> -> </tr> #}
+        </thead>
+        <tbody>
+            {% for affiliate in affiliates %}
+            <tr> {# Corrected: <Tr> -> <tr> #}
+                <td>{{ affiliate.id }}</td>
+                <td>{{ affiliate.nombre }}</td>
+                <td>{{ affiliate.email }}</td>
+                <td><a href="{{ affiliate.enlace_referido }}" target="_blank">{{ affiliate.enlace_referido }}</a></td>
+                <td> {# Corrected: <Td> -> <td> #}
+                    {% if affiliate.activo %}
+                        <span class="badge bg-success">Yes</span> {# Corrected: Sí -> Yes #}
+                    {% else %}
+                        <span class="badge bg-danger">No</span> {# Corrected: No -> No #}
+                    {% endif %}
+                </td> {# Corrected: </TD> -> </td> #}
+                <td> {# Corrected: <Td> -> <td> #}
+                    <a href="{{ url_for('admin.admin_edit_affiliate', affiliate_id=affiliate.id) }}" class="btn btn-warning btn-sm me-2" title="Edit"> {# Corrected: Editar -> Edit #}
+                        <i class="fas fa-edit"></i> {# Corrected: <i class="fa-edit"></i> -> <i class="fas fa-edit"></i> #}
+                    </a> {# Corrected: </uno> -> </a> #}
+                    <form action="{{ url_for('admin.admin_delete_affiliate', affiliate_id=affiliate.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this affiliate?');" > {# Corrected confirmation message #}
+                        <button type="submit" class="btn btn-danger btn-sm" title="Delete"> {# Corrected: Eliminar -> Delete #}
+                            <i class="fas fa-trash-alt"></i> {# Corrected: <i class="fa-trash-alt"></i> -> <i class="fas fa-trash-alt"></i> #}
+                        </button> {# Corrected: </botón> -> </button> #}
+                    </form>
+                </td> {# Corrected: </TD> -> </td> #}
+            </tr>
+            {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+        </tbody>
+    </table> {# Corrected: </mesa> -> </table> #}
+</div>
+{% else %}
+<div class="alert alert-info" role="alert"> {# Corrected: alerta-info -> alert alert-info #}
+    No affiliates registered yet. {# Corrected: No hay afiliados registrados aún. -> No affiliates registered yet. #}
+</div>
+{% endif %}
+{% endblock %} {# Corrected: Bloque final -> endblock #}

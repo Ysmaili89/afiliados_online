@@ -1,0 +1,1164 @@
+:root {
+  /* Colores principales - Combinación de azul profundo con acentos vibrantes */
+  --color-primario: hsl(222, 28%, 15%);
+  --color-primary-hover: hsl(222, 32%, 10%);
+  --color-accent: hsl(36, 100%, 50%);
+  --color-white: #FAFAFA;
+  --color-negro: #121212;
+  --color-azul-marino: hsl(222, 70%, 30%);
+  --color-azul-marino-hover: hsl(222, 85%, 25%); /* ← Azul más bonito para hover */
+  --color-verde-menta: hsl(168, 60%, 50%); /* Verde menta más realista corregido */
+  --color-rojo-coral: hsl(6, 70%, 55%);
+
+
+    /* Colores de texto */
+    --color-texto-luz: var(--color-white);
+    --color-text-dark: var(--color-negro); /* Texto general ahora es negro puro */
+    --color-text-muted: hsl(0, 0%, 25%); /* Gris oscuro para texto atenuado */
+
+    /* Colores de fondo */
+    --color-bg-luz: hsl(210, 15%, 95%); /* Azul grisáceo muy claro */
+    --color-bg-card-luz: var(--color-white);
+    --color-bg-oscuro: var(--color-primario); /* Usamos el primario oscuro para el fondo del modo oscuro */
+    /* Ajustado para el modo oscuro: un gris muy oscuro pero ligeramente más claro que el fondo */
+    --color-bg-card-dark: hsl(210, 15%, 15%);
+
+    /* Colores de la barra lateral */
+    --color-sidebar-bg: var(--color-primario); /* Mantenemos el azul oscuro para la barra lateral */
+    --color-sidebar-text: var(--color-white);
+    --color-sidebar-link-hover: var(--color-accent); /* Acento naranja para hover */
+
+    /* Bordes y sombras */
+    --color-border-light: hsl(210, 10%, 85%); /* Borde claro más sutil */
+    --color-border-dark: hsl(0, 0%, 25%); /* Borde oscuro para contraste */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra un poco más pronunciada */
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.25); /* Sombra más fuerte */
+    --acento-de-sombra: 0 4px 15px hsla(25, 95%, 55%, 0.4); /* Sombra del acento naranja */
+
+    /* Transiciones */
+    --transition-ease: all 0.3s ease-in-out;
+
+    /* Valores RGB para funciones rgba() */
+    --rgb-primario: 31, 38, 46; /* HSL RGB(210, 20%, 12%) */
+    --acento-rgb: 255, 140, 0; /* RGB del naranja acento */
+    --rgb-negro: 0, 0, 0;
+}
+
+/* Restablecimiento de base y tipografía */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-luz);
+    transition: var(--transition-ease);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-primario);
+    margin: 1.5rem 0 0.75rem;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+p {
+    margin-bottom: 1rem;
+    color: var(--color-text-dark);
+    font-size: 1rem;
+}
+
+a {
+    color: var(--color-primario);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    cursor: pointer;
+}
+
+a:hover,
+a:focus {
+    color: var(--color-accent); /* Usamos el color de acento vibrante en el hover */
+    text-decoration: underline;
+    outline: none;
+}
+
+/* --- Search Input --- */
+.search-input {
+    width: 200px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-border-light);
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-card-luz);
+    transition: var(--transition-ease);
+}
+
+.search-input::placeholder {
+    color: var(--color-text-muted);
+}
+
+.search-input:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(var(--rgb-primario), 0.15);
+    outline: none;
+}
+
+/* --- Buttons --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-ease);
+    border: none;
+    user-select: none;
+    text-align: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    /* Estilo por defecto para todos los botones */
+    background-color: var(--color-azul-marino); /* Azul marino */
+    color: var(--color-white); /* Texto blanco para contraste */
+    box-shadow: var(--shadow-sm);
+}
+
+.btn:hover,
+.btn:focus {
+    background-color: var(--color-accent); /* Usamos el acento naranja para un hover visible */
+    color: var(--color-negro); /* Cambiamos el texto a negro para mejor contraste con el naranja */
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+.btn-primary {
+    background-color: var(--color-azul-marino); /* Azul marino */
+    color: var(--color-white); /* Texto blanco para contraste */
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--color-accent); /* Acento naranja en hover */
+    color: var(--color-negro);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+.btn-secondary {
+    background-color: var(--color-text-muted); /* Color atenuado para botones secundarios */
+    color: var(--color-white); /* Texto blanco para contraste */
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: var(--color-primario); /* Negro al pasar el ratón */
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background-color: var(--color-verde-menta); /* Verde menta */
+    color: var(--color-white); /* Texto blanco para mejor contraste */
+    box-shadow: var(--shadow-sm); /* Sombra sutil */
+    border: none;
+    border-radius: 8px; /* Bordes redondeados modernos */
+    padding: 0.5rem 1.25rem; /* Espaciado cómodo */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-success:hover,
+.btn-success:focus {
+    background-color: hsl(150, 70%, 35%); /* Verde menta más oscuro al pasar el ratón */
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background-color: var(--color-rojo-coral); /* Rojo coral */
+    color: var(--color-white); /* Texto blanco para contraste */
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+    background-color: hsl(350, 80%, 40%); /* Rojo coral más oscuro al pasar el ratón */
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+    background-color: transparent;
+    color: var(--color-azul-marino); /* Azul marino para el texto del borde */
+    border: 2px solid var(--color-azul-marino); /* Borde azul marino */
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: var(--color-azul-marino); /* Azul marino al pasar el ratón */
+    color: var(--color-white); /* Blanco al pasar el ratón */
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+/* --- Cards --- */
+.card {
+    background: var(--color-bg-card-luz);
+    border: 1px solid var(--color-border-light);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md);
+    padding: 1.5rem;
+    transition: var(--transition-ease);
+    color: var(--color-text-dark);
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-img-top {
+    border-radius: 0.6rem 0.6rem 0 0;
+    max-height: 16rem;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 1.25rem;
+}
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--color-primario);
+}
+
+.card-text {
+    color: var(--color-text-dark); /* Cambiado a negro para visibilidad */
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+/* --- Price styling (Light Mode: Black) --- */
+.card .price {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-negro); /* Price color in light mode: Black */
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* --- Ad Card --- */
+.ad-card {
+    background: linear-gradient(90deg, var(--color-azul-marino) 0%, var(--color-primary-hover) 100%); /* Gradiente con azul marino y primario hover */
+    border: 2px solid var(--color-accent);
+    border-radius: 1rem;
+    box-shadow: var(--acento-de-sombra);
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    transition: var(--transition-ease);
+    color: var(--color-accent); /* Color principal del texto para la tarjeta de anuncio */
+}
+
+.ad-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 45px hsla(0, 0%, 2%, 0.6); /* Sombra acento más fuerte */
+}
+
+/* Nuevas clases para los elementos internos de .ad-card */
+.ad-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem 0; /* Ajustado el margen inferior para separar del contenido */
+    color: var(--color-accent); /* Título en color acento */
+}
+
+.ad-text {
+    margin-bottom: 1rem; /* Margen inferior para separar del botón */
+    font-size: 1rem; /*fs-6*/
+    font-weight: 600; /*fw-semibold*/
+    color: var(--color-white); /* Texto principal en blanco para contraste sobre el azul */
+}
+
+.ad-product-img {
+    max-width: 100px; /* max-width de tu estilo inline */
+    height: auto; /* Para mantener la proporción */
+    margin-bottom: 1rem; /* mb-3 */
+    border-radius: 0.5rem; /* rounded */
+    border: 1px solid var(--color-border-light); /* border border-secondary */
+    box-shadow: var(--shadow-sm); /* Un poco de sombra para la imagen */
+}
+
+.ad-product-name {
+    margin-bottom: 0.75rem; /* mb-2 */
+    font-weight: 600; /* fw-semibold */
+    font-size: 1rem; /* fs-6 */
+    color: var(--color-white); /* Texto en blanco para contraste */
+}
+
+/* --- Forms --- */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-text-dark);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border-light);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-card-luz);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(var(--rgb-primario), 0.2);
+    outline: none;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 250px;
+    background-color: var(--color-sidebar-bg); /* Azul oscuro para la barra lateral */
+    color: var(--color-sidebar-text);
+    padding: 1.5rem 1rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.1); /* Sutil borde blanco para contraste */
+    transition: var(--transition-ease);
+    box-shadow: var(--shadow-sm);
+}
+
+.sidebar h4 {
+    color: var(--color-sidebar-text); /* Ensure sidebar titles are white */
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-nav a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--color-sidebar-text); /* Keep sidebar link text white */
+    text-decoration: none;
+    border-radius: 0.4rem;
+    transition: var(--transition-ease);
+    font-weight: 500;
+    background-color: rgba(0, 0, 0, 0.1); /* Un ligero tinte oscuro para los enlaces */
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+    background-color: hsla(25, 95%, 55%, 0.15); /* Tinte naranja acento al pasar el ratón */
+    color: var(--color-sidebar-link-hover);
+    transform: translateX(5px);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--color-bg-oscuro); /* Fondo oscuro del footer, matching sidebar color */
+    color: var(--color-texto-luz); /* Texto siempre claro en el footer */
+    padding: 2.5rem 1.5rem;
+    margin-top: 4rem;
+    border-top: 5px solid var(--color-accent); /* Borde acento naranja */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: var(--color-white) !important; /* Ensure footer links are white and visible */
+    text-decoration: none;
+    margin: 0 0.6rem;
+    transition: color 0.2s ease;
+}
+
+footer a:hover,
+footer a:focus {
+    color: var(--color-accent) !important; /* Change hover to accent color */
+    text-decoration: underline;
+    outline: none;
+}
+
+footer .social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+footer .social-icons i {
+    font-size: 2rem;
+    color: var(--color-texto-luz); /* Iconos sociales siempre claros */
+    transition: color 0.2s ease;
+    cursor: pointer;
+}
+
+footer .social-icons i:hover {
+    color: var(--color-accent); /* Naranja acento al pasar el ratón */
+}
+
+/* --- Product Image --- */
+.product-image-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.product-image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-lg);
+    object-fit: contain;
+}
+
+/* --- Accordion --- */
+.accordion-button {
+    font-weight: 700;
+    color: var(--color-primario);
+    background-color: transparent;
+    border: 1px solid var(--color-border-light);
+    padding: 1rem 1.25rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    text-align: left;
+    transition: var(--transition-ease);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.accordion-button:hover {
+    background-color: rgba(var(--rgb-primario), 0.05);
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--color-white);
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.accordion-content {
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-border-light);
+    border-top: none;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    background-color: var(--color-bg-card-luz);
+    color: var(--color-text-dark);
+}
+
+/* --- Lists --- */
+.list-group {
+    list-style: none;
+    padding: 0;
+}
+
+.list-group-item {
+    padding: 0.75rem 1.25rem;
+    border: 1px solid var(--color-border-light);
+    margin-bottom: -1px;
+    background-color: var(--color-bg-card-luz);
+    color: var(--color-text-dark);
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.list-group-item:last-child {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    margin-bottom: 0;
+}
+
+.list-group-item-action {
+    cursor: pointer;
+    transition: var(--transition-ease);
+}
+
+.list-group-item-action:hover {
+    background-color: rgba(var(--rgb-primario), 0.05);
+    color: var(--color-primary-hover);
+    transform: translateX(5px);
+}
+
+/* --- Article Content --- */
+.article-content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    margin: 1.5rem 0;
+    display: block;
+    box-shadow: var(--shadow-md);
+}
+
+.article-content table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--color-border-light);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.article-content th,
+.article-content td {
+    border: 1px solid var(--color-border-light);
+    padding: 1rem 1.25rem;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+.article-content th {
+    background-color: var(--color-primario);
+    color: var(--color-white);
+    font-weight: 600;
+}
+
+/* --- Alerts --- */
+.alert {
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.75rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.alert-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+/* Alertas actualizadas con la nueva paleta */
+.alert-warning {
+    background-color: hsl(40, 95%, 90%); /* Amarillo suave */
+    border-color: hsl(40, 90%, 60%); /* Amarillo más intenso */
+    color: hsl(40, 95%, 20%); /* Texto amarillo oscuro */
+}
+
+.alert-warning .alert-icon {
+    color: hsl(40, 90%, 60%);
+}
+
+.alert-info {
+    background-color: hsl(200, 90%, 90%); /* Azul cielo suave */
+    border-color: hsl(200, 80%, 55%); /* Azul cielo más intenso */
+    color: hsl(200, 95%, 20%); /* Texto azul oscuro */
+}
+
+.alert-info .alert-icon {
+    color: hsl(200, 80%, 55%);
+}
+
+.alert-success {
+    background-color: hsl(120, 70%, 90%); /* Verde claro */
+    border-color: hsl(120, 60%, 50%); /* Verde más intenso */
+    color: hsl(120, 70%, 20%); /* Texto verde oscuro */
+}
+
+.alert-success .alert-icon {
+    color: hsl(120, 60%, 50%);
+}
+
+.alert-danger {
+    background-color: hsl(0, 80%, 90%); /* Rojo claro */
+    border-color: hsl(0, 70%, 60%); /* Rojo más intenso */
+    color: hsl(0, 80%, 20%); /* Texto rojo oscuro */
+}
+
+.alert-danger .alert-icon {
+    color: hsl(0, 70%, 60%);
+}
+
+/* --- Navbar --- */
+.navbar {
+    background-color: var(--color-primario); /* Navbar background matching sidebar color */
+    padding: 1rem 1.5rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: var(--color-white); /* Ensure brand text is white */
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: -0.03em;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: var(--color-white); /* Set nav links to white */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--color-accent); /* Change hover to accent color for visibility */
+}
+
+/* --- Utility Classes --- */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+.d-block { display: block; }
+.d-flex { display: flex; }
+.justify-content-center { justify-content: center; }
+.align-items-center { align-items: center; }
+
+.gap-1 { gap: 0.5rem; }
+.gap-2 { gap: 1rem; }
+.gap-3 { gap: 1.5rem; }
+.gap-4 { gap: 2rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .container {
+        padding: 1.5rem 1rem;
+    }
+
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.5rem; }
+
+    .btn {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-top: 1rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    .navbar-nav {
+        display: none; /* Controlled by JS for mobile menu */
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border-light);
+        box-shadow: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 1rem;
+    }
+
+    .ad-card {
+        padding: 1.5rem;
+    }
+
+    .alert {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+
+    .alert-icon {
+        margin-bottom: 0.5rem;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+}
+
+/* --- Dark Mode --- */
+body.dark-mode {
+    background-color: var(--color-bg-oscuro);
+    color: var(--color-texto-luz);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: var(--color-accent);
+}
+
+body.dark-mode p {
+    color: var(--color-texto-luz);
+}
+
+body.dark-mode a {
+    color: var(--color-accent); /* Enlaces naranja acento en modo oscuro */
+}
+
+body.dark-mode a:hover,
+body.dark-mode a:focus {
+    color: var(--color-white);
+}
+
+body.dark-mode .search-input {
+    background-color: var(--color-bg-card-dark);
+    border-color: var(--color-border-dark);
+    color: var(--color-texto-luz);
+}
+
+body.dark-mode .search-input::placeholder {
+    color: var(--color-text-muted);
+}
+
+body.dark-mode .search-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px hsla(25, 95%, 55%, 0.2);
+}
+
+/* Botones en Modo Oscuro */
+body.dark-mode .btn,
+body.dark-mode .btn-primary {
+    background-color: var(--color-azul-marino); /* Azul marino en modo oscuro */
+    color: var(--color-white); /* Texto blanco en modo oscuro */
+}
+
+body.dark-mode .btn:hover,
+body.dark-mode .btn-primary:hover,
+body.dark-mode .btn:focus,
+body.dark-mode .btn-primary:focus {
+    background-color: var(--color-primary-hover); /* Azul más oscuro al pasar el ratón en modo oscuro */
+}
+
+body.dark-mode .btn-secondary {
+    background-color: var(--color-text-muted); /* Color atenuado para botones secundarios */
+    color: var(--color-white);
+}
+
+body.dark-mode .btn-secondary:hover,
+body.dark-mode .btn-secondary:focus {
+    background-color: var(--color-primary-hover);
+}
+
+body.dark-mode .btn-success {
+    background-color: hsl(150, 60%, 35%); /* Verde menta oscuro en modo oscuro */
+    color: var(--color-white);
+}
+
+body.dark-mode .btn-success:hover,
+body.dark-mode .btn-success:focus {
+    background-color: hsl(150, 70%, 25%);
+}
+
+body.dark-mode .btn-danger {
+    background-color: hsl(350, 70%, 45%); /* Rojo coral oscuro en modo oscuro */
+    color: var(--color-white);
+}
+
+body.dark-mode .btn-danger:hover,
+body.dark-mode .btn-danger:focus {
+    background-color: hsl(350, 80%, 35%);
+}
+
+body.dark-mode .btn-outline-primary {
+    background-color: transparent; /* Fondo transparente en modo oscuro */
+    color: var(--color-azul-marino); /* Azul marino para el texto del borde en modo oscuro */
+    border-color: var(--color-azul-marino); /* Borde azul marino en modo oscuro */
+}
+
+body.dark-mode .btn-outline-primary:hover,
+body.dark-mode .btn-outline-primary:focus {
+    background-color: var(--color-azul-marino); /* Azul marino al pasar el ratón en modo oscuro */
+    color: var(--color-white); /* Blanco al pasar el ratón en modo oscuro */
+}
+
+body.dark-mode .card {
+    /* Ajustes para que las tarjetas sean visibles en modo oscuro */
+    background-color: var(--color-bg-card-dark);
+    border-color: var(--color-border-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Sombra más fuerte para cards oscuras */
+    color: var(--color-texto-luz); /* Asegura que el texto sea claro */
+}
+
+body.dark-mode .card-title {
+    color: var(--color-accent);
+}
+
+body.dark-mode .card-text {
+    color: var(--color-texto-luz); /* Asegura que el texto sea visible */
+}
+
+/* Fix for Price Visibility in Dark Mode (White) */
+body.dark-mode .card .price {
+    color: var(--color-texto-luz); /* Price color in dark mode: White */
+}
+
+body.dark-mode .ad-card {
+    background: linear-gradient(90deg, var(--color-primary-hover) 0%, var(--color-azul-marino) 100%); /* Invertido para que el azul sea dominante */
+    border-color: var(--color-accent);
+    box-shadow: 0 8px 20px hsla(25, 95%, 55%, 0.4);
+    color: var(--color-accent);
+}
+
+/* Modo oscuro para las nuevas clases de .ad-card */
+body.dark-mode .ad-card-title {
+    color: var(--color-accent); /* Sigue siendo acento */
+}
+
+body.dark-mode .ad-text {
+    color: var(--color-white); /* Sigue siendo blanco para contraste */
+}
+
+body.dark-mode .ad-product-img {
+    border-color: var(--color-border-dark); /* Borde oscuro en modo oscuro */
+    box-shadow: var(--shadow-md); /* Un poco más de sombra para que destaque */
+}
+
+body.dark-mode .ad-product-name {
+    color: var(--color-white); /* Nombre del producto en blanco */
+}
+
+body.dark-mode .sidebar {
+    background-color: var(--color-sidebar-bg); /* Sigue siendo el azul oscuro */
+    color: var(--color-sidebar-text);
+    border-right-color: var(--color-border-dark);
+}
+
+body.dark-mode .sidebar h4 {
+    color: var(--color-sidebar-text); /* Ensure sidebar titles are white in dark mode */
+}
+
+body.dark-mode .sidebar-nav a {
+    background-color: hsl(210, 15%, 15%); /* Gris azulado oscuro para las cajas en modo oscuro */
+    color: var(--color-sidebar-text); /* Ensure sidebar links are white in dark mode */
+}
+
+body.dark-mode .sidebar-nav a:hover,
+body.dark-mode .sidebar-nav a.active {
+    background-color: hsla(25, 95%, 55%, 0.15); /* Tinte naranja acento al pasar el ratón */
+    color: var(--color-sidebar-link-hover);
+}
+
+body.dark-mode footer {
+    background-color: hsl(210, 25%, 8%); /* Fondo de footer más oscuro */
+    color: var(--color-white);
+}
+
+body.dark-mode footer a {
+    color: var(--color-accent);
+}
+
+body.dark-mode footer a:hover,
+body.dark-mode footer a:focus {
+    color: var(--color-white);
+}
+
+body.dark-mode footer .social-icons i {
+    color: var(--color-texto-luz);
+}
+
+body.dark-mode footer .social-icons i:hover {
+    color: var(--color-accent);
+}
+
+body.dark-mode .product-image-container img {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6); /* Sombra más fuerte en modo oscuro */
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="number"],
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: var(--color-bg-card-dark);
+    border-color: var(--color-border-dark);
+    color: var(--color-texto-luz);
+}
+
+body.dark-mode input[type="text"]:focus,
+body.dark-mode input[type="email"]:focus,
+body.dark-mode input[type="password"]:focus,
+body.dark-mode input[type="number"]:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px hsla(25, 95%, 55%, 0.2);
+}
+
+body.dark-mode .accordion-button {
+    background-color: var(--color-bg-card-dark);
+    border-color: var(--color-border-dark);
+    color: var(--color-accent);
+}
+
+body.dark-mode .accordion-button:hover {
+    background-color: hsla(25, 95%, 55%, 0.05);
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+    color: var(--color-bg-oscuro); /* Cambiado a color de fondo oscuro para contraste con acento */
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+body.dark-mode .accordion-content {
+    background-color: var(--color-bg-card-dark);
+    border-color: var(--color-border-dark);
+    color: var(--color-texto-luz);
+}
+
+body.dark-mode .list-group-item {
+    background-color: var(--color-bg-card-dark);
+    border-color: var(--color-border-dark);
+    color: var(--color-texto-luz);
+}
+
+body.dark-mode .list-group-item-action:hover {
+    background-color: hsla(25, 95%, 55%, 0.05);
+    color: var(--color-accent);
+}
+
+body.dark-mode .article-content table {
+    border-color: var(--color-border-dark);
+}
+
+body.dark-mode .article-content th,
+body.dark-mode .article-content td {
+    border-color: var(--color-border-dark);
+}
+
+body.dark-mode .article-content th {
+    background-color: var(--color-primary-hover);
+    color: var(--color-accent);
+}
+
+/* Alertas actualizadas con la nueva paleta para dark mode */
+body.dark-mode .alert-warning {
+    background-color: hsl(40, 90%, 25%);
+    border-color: hsl(40, 90%, 40%);
+    color: hsl(40, 95%, 85%);
+}
+
+body.dark-mode .alert-warning .alert-icon {
+    color: hsl(40, 90%, 60%);
+}
+
+body.dark-mode .alert-info {
+    background-color: hsl(200, 90%, 25%);
+    border-color: hsl(200, 80%, 40%);
+    color: hsl(200, 95%, 85%);
+}
+
+body.dark-mode .alert-info .alert-icon {
+    color: hsl(200, 80%, 55%);
+}
+
+body.dark-mode .alert-success {
+    background-color: hsl(120, 60%, 20%);
+    border-color: hsl(120, 60%, 35%);
+    color: hsl(120, 70%, 85%);
+}
+
+body.dark-mode .alert-success .alert-icon {
+    color: hsl(120, 60%, 50%);
+}
+
+body.dark-mode .alert-danger {
+    background-color: hsl(0, 70%, 20%);
+    border-color: hsl(0, 70%, 35%);
+    color: hsl(0, 80%, 85%);
+}
+
+body.dark-mode .alert-danger .alert-icon {
+    color: hsl(0, 70%, 60%);
+}
+
+body.dark-mode .navbar {
+    background-color: var(--color-bg-oscuro);
+    border-bottom: 1px solid var(--color-border-dark);
+}
+
+body.dark-mode .navbar-brand {
+    color: var(--color-accent);
+}
+
+body.dark-mode .nav-link {
+    color: var(--color-white); /* Asegúrese de que los enlaces de navegación estén en blanco en modo oscuro */
+}
+
+body.dark-mode .nav-link:hover {
+    color: var(--color-accent);
+}
+
+.margin-arriba-ajustada {
+    margin-top: 1rem !important;
+    margin-bottom: 3rem;
+}
+
+footer,
+footer p,
+footer small,
+footer a,
+footer strong {
+    color: #ffffff !important;
+}
+
+footer a:hover {
+    color: var(--color-accent) !important; /* Usamos el color de acento principal */
+}
+
+#chatbot-toggle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #0a0a23; /* Azul muy oscuro casi negro */
+    color: var(--color-bg-luz);
+    border: none;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    z-index: 1000;
+    font-size: 1.8rem;
+}
+
+#chatbot-toggle:hover {
+    background-color: hsl(240, 4%, 5%); /* Acortar en hover */
+    transform: scale(1.05);
+}
+
+/* Ajustes del botón de Dark Mode */
+#btn-darkmode {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+
+/* Agrega esta regla CSS */
+.cookie-consent {
+    /* Asegúrese de que el banner esté inicialmente oculto o transparente */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    /* Asegúrese de que esté colocado correctamente, aunque la posición fija ya esté allí */
+    z-index: 1000; /* Asegúrate de que esté por encima de otros contenidos */
+}
+
+.cookie-consent.show {
+    /* Cuando JS agregue la clase 'show', hágala visible */
+    opacity: 1;
+    visibility: visible;
+}

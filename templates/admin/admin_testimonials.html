@@ -1,0 +1,81 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Gestionar Testimonios</h1>
+
+    <a href="{{ url_for('admin.admin_add_testimonial') }}" class="btn btn-primary mb-3">Añadir Nuevo Testimonio</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Lista de Testimonios</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Autor</th>
+                            <th>Contenido</th>
+                            <th>Fecha</th>
+                            <th>Visible</th>
+                            <th>Likes</th>
+                            <th>Dislikes</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for testimonial in testimonials %} {# Corrected: 'para testimonios en testimonios' to 'for testimonial in testimonials' #}
+                        <tr class="{% if not testimonial.is_visible %}table-warning{% endif %}">
+                            <td>{{ testimonial.id }}</td>
+                            <td>{{ testimonial.author }}</td>
+                            <td>{{ testimonial.content[:100] }}...</td> {# Mostrar solo los primeros 100 caracteres #}
+                            <td>{{ testimonial.date_posted | datetime }}</td>
+                            <td>
+                                {% if testimonial.is_visible %}
+                                    <span class="badge bg-success">Sí</span>
+                                {% else %}
+                                    <span class="badge bg-danger">No</span>
+                                {% endif %}
+                            </td>
+                            <td><span class="badge bg-success">{{ testimonial.likes }}</span></td>
+                            <td><span class="badge bg-danger">{{ testimonial.dislikes }}</span></td>
+                            <td>
+                                <a href="{{ url_for('admin.admin_edit_testimonial', testimonial_id=testimonial.id) }}" class="btn btn-warning btn-sm mb-1">Editar</a>
+
+                                <form action="{{ url_for('admin.admin_toggle_visibility_testimonial', testimonial_id=testimonial.id) }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> {# ADDED CSRF TOKEN #}
+                                    <button type="submit" class="btn {% if testimonial.is_visible %}btn-secondary{% else %}btn-success{% endif %} btn-sm mb-1">
+                                        {% if testimonial.is_visible %}Ocultar{% else %}Mostrar{% endif %}
+                                    </button>
+                                </form>
+
+                                <form action="{{ url_for('admin.admin_delete_testimonial', testimonial_id=testimonial.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este testimonio permanentemente?');" >
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> {# AÑADIDO TOKEN CSRF #}
+                                    <button type="submit" class="btn btn-danger btn-sm mb-1">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center">No hay testimonios disponibles.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {# Corrected: 'bloque final' to 'endblock' #}

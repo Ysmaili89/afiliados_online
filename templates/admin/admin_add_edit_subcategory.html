@@ -1,0 +1,50 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}
+    {{ 'Edit Subcategory' if subcategory else 'Add Subcategory' }} - Online Affiliates
+{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">
+        {{ 'Edit Subcategory' if subcategory else 'Add New Subcategory' }} for "{{ category.nombre }}"
+    </h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form
+                method="POST"
+                action="{{
+                    url_for(
+                        'admin.admin_edit_subcategory',
+                        category_id=category.id,
+                        subcategory_id=subcategory.id
+                    ) if subcategory else
+                    url_for('admin.admin_add_subcategory', category_id=category.id)
+                }}"
+            > {# Removed the problematic comment and trailing characters here #}
+                {# Ensure this is the correct logic for add/edit.
+                   The 'else' part of the ternary operator directly provides the add URL. #}
+
+                {{ form.hidden_tag() }} {# Asegúrate de incluir el token CSRF #}
+                <div class="mb-3">
+                    {{ form.nombre.label(class="form-label") }}
+                    {{ form.nombre(class="form-control" ~ ('is-invalid' if form.nombre.errors else ''), required=True) }}
+                    {% if form.nombre.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.nombre.errors %} {# Corrected: {% por error en form.nombre.errors %} -> {% for error in form.nombre.errors %} #}
+                                {{ error }}
+                            {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'Update Subcategory' if subcategory else 'Add Subcategory' }} {# Corrected text #}
+                    </button> {# Corrected: </botón> -> </button> #}
+                    <a href="{{ url_for('admin.admin_categories') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form> {# Corrected: </forma> -> </form> #}
+        </div>
+    </div>
+{% endblock %} {# Corrected: {% bloque final %} -> {% endblock %} #}

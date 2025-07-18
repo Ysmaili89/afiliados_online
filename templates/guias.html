@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Guías y Artículos - Afiliados Online{% endblock %}
+
+{% block meta_description %}
+Explora nuestras guías de compra, rankings, tutoriales y artículos especializados. Encuentra información clara y práctica para tomar decisiones bien fundamentadas.
+{% endblock %}
+
+{% block meta_keywords %}
+guías de compra, tutoriales, rankings, artículos, blog, consejos, comparativas, afiliados online
+{% endblock %}
+
+{% block content %}
+<div class="container my-5" role="main">
+    <h1 class="mb-4">Guías y Artículos Especializados</h1>
+    <p class="lead text-secondary">
+        Accede a contenido estratégico: rankings, comparativas, tutoriales y análisis diseñados para ayudarte a tomar decisiones más inteligentes.
+    </p>
+
+    <div class="list-group mt-4" aria-label="Listado de guías y artículos">
+        {% for articulo in articulos %}
+        <a href="{{ url_for('publico.guia_detalle', slug=articulo.slug) }}" 
+           class="list-group-item list-group-item-action py-4" 
+           aria-describedby="desc-{{ loop.index }}">
+            <div class="d-flex w-100 justify-content-between align-items-center">
+                <h2 id="titulo-{{ loop.index }}" class="mb-1 text-primary fs-5">{{ articulo.titulo | e }}</h2>
+                <small class="text-muted" aria-label="Fecha de publicación">
+                    <time datetime="{{ articulo.fecha_iso | e }}">{{ articulo.fecha_formateada | e }}</time>
+                </small>
+            </div>
+            <p id="desc-{{ loop.index }}" class="mb-1 mt-2 text-dark">
+                {{ articulo.contenido | striptags | truncate(150, True, '...') | e }}
+            </p>
+        </a>
+        {% else %}
+        <div class="alert alert-info mt-4" role="alert">
+            No hay artículos disponibles en este momento. Vuelve pronto para más contenido.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

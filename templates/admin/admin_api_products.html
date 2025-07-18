@@ -1,0 +1,102 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Admin - Sincronización de Productos{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Sincronización Manual de Productos vía API</h1>
+
+{# Mensajes flash de éxito o error #}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="card shadow-sm">
+    <div class="card-header fw-bold">
+        Opciones de Sincronización
+    </div>
+    <div class="card-body">
+        <p>
+            Ingresa la URL del endpoint de la API desde donde deseas importar productos y haz clic en el botón para iniciar la sincronización manual.
+        </p>
+
+        <form action="{{ url_for('admin.admin_sync_api_products') }}" method="POST" novalidate>
+            {# CRITICAL: ENSURE THIS LINE IS PRESENT AND EXACTLY HERE #}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> 
+            
+            <div class="mb-3">
+                <label for="api_url" class="form-label">URL de la API:</label>
+                <input
+                    type="url"
+                    class="form-control {% if form_errors and form_errors.api_url %}is-invalid{% endif %}"
+                    id="api_url"
+                    name="api_url"
+                    placeholder="https://api.ejemplo.com/productos"
+                    value="{{ request.form.get('api_url', '') }}"
+                    required
+                    aria-describedby="apiUrlHelp"
+                >
+                <div id="apiUrlHelp" class="form-text">
+                    Debe ser una URL válida y accesible desde el servidor.
+                </div>
+                {% if form_errors and form_errors.api_url %}
+                    <div class="invalid-feedback">
+                        {{ form_errors.api_url }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-sync-alt me-1" aria-hidden="true"></i> Sincronizar Ahora
+            </button>
+        </form>
+
+        <p class="mt-3 text-muted">
+            <small>
+                <i class="fas fa-clock me-1" aria-hidden="true"></i>
+                Nota: Esta opción ejecuta una sincronización manual. La automática debe configurarse como tarea programada (cron job) en el servidor.
+            </small>
+        </p>
+    </div>
+</div>
+
+<div class="card mt-4 shadow-sm">
+    <div class="card-header fw-bold">
+        Información de Configuración (Ejemplo)
+    </div>
+    <div class="card-body">
+        <p>Detalles actuales de la configuración de la API:</p>
+        <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span><strong>Punto de conexión actual:</strong></span>
+                <code>{{ last_synced_api_url | default('N/A', true) }}</code>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span><strong>Clave API:</strong></span>
+                <code>••••••••••••••••••••</code>
+                <small class="text-muted fst-italic ms-2">(No mostrar en producción)</small>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span><strong>Última sincronización:</strong></span>
+                <span>{{ last_sync_time | default('N/A', true) }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span><strong>Productos actualizados:</strong></span>
+                <span>{{ last_sync_count | default('N/A', true) }}</span>
+            </li>
+        </ul>
+        <div class="alert alert-info mb-0 d-flex align-items-center" role="alert">
+            <i class="fas fa-shield-alt me-2" aria-hidden="true"></i>
+            <div>
+                Asegúrate de manejar claves sensibles mediante variables de entorno o sistemas seguros de configuración.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}
+    {{ 'Edit Testimonial' if testimonial else 'Add New Testimonial' }} - Online Affiliates
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">{% if testimonial %}Edit Testimonial{% else %}Add New Testimonial{% endif %}</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Testimonial Form</h6>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <div class="mb-3">
+                    {{ form.author.label(class="form-label") }}
+                    {{ form.author(class="form-control") }}
+                    {% for error in form.author.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.content.label(class="form-label") }}
+                    {{ form.content(class="form-control") }}
+                    {% for error in form.content.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="mb-3 form-check">
+                    {{ form.is_visible(class="form-check-input") }}
+                    {{ form.is_visible.label(class="form-check-label") }}
+                    {% for error in form.is_visible.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% if testimonial %}
+                <div class="mb-3">
+                    {{ form.likes.label(class="form-label") }}
+                    {{ form.likes(class="form-control") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.dislikes.label(class="form-label") }}
+                    {{ form.dislikes(class="form-control") }}
+                </div>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">{{ 'Update Testimonial' if testimonial else 'Add Testimonial' }}</button>
+            </form>
+
+            {% if testimonial %} {# Like/Dislike and delete buttons only in edit mode #}
+            <div class="mt-4">
+                <h6 class="m-0 font-weight-bold text-primary mb-3">Vote Testimonial</h6>
+                <form action="{{ url_for('admin.admin_like_testimonial', testimonial_id=testimonial.id) }}" method="POST" style="display:inline;" >
+                    {{ form.csrf_token }} {# ADDED CSRF TOKEN #}
+                    <button type="submit" class="btn btn-success me-2"><i class="fas fa-thumbs-up"></i> Like</button>
+                </form>
+                <form action="{{ url_for('admin.admin_dislike_testimonial', testimonial_id=testimonial.id) }}" method="POST" style="display:inline;" >
+                    {{ form.csrf_token }} {# ADDED CSRF TOKEN #}
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-thumbs-down"></i> Dislike</button>
+                </form>
+            </div>
+
+            <div class="mt-4">
+                <h6 class="m-0 font-weight-bold text-primary mb-3">Delete Testimonial</h6>
+                <form action="{{ url_for('admin.admin_delete_testimonial', testimonial_id=testimonial.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this testimonial? This action cannot be undone.');" >
+                    {{ form.csrf_token }} {# ADDED CSRF TOKEN #}
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete Testimonial</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

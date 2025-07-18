@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{% block title %}Afiliados Online: Reseñas y Guías de Compra Confiables{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="{% block meta_description %}Encuentra los mejores productos, guías de compra detalladas y comparativas confiables. Tu fuente experta para reseñas imparciales y decisiones de compra inteligentes. {% endblock %}" />
+    <meta name="keywords" content="{% block meta_keywords %}afiliados, comparativas, reviews, reseñas, guías de compra, descuentos, tecnología, hogar, top productos, compra inteligente, mejores ofertas{% endblock %}" />
+    <meta name="author" content="Afiliados Online" />
+    <meta name="robots" content="index, follow" />
+    {# Using a CSS variable for theme-color allows easy dark mode integration #}
+    <meta name="theme-color" content="var(--theme-primary-color, #333333)" /> 
+
+    {# Open Graph Meta Tags for social sharing #}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{% block og_title %}Afiliados Online: Tu Guía para Compras Inteligentes{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}Descubre los mejores productos con nuestras guías, comparativas y reseñas imparciales. ¡Compra con confianza en Afiliados Online!{% endblock %}" />
+    <meta property="og:image" content="{{ url_for('static', filename='img/og-image.jpg') }}" />
+    <meta property="og:url" content="{{ request.url }}" />
+    <meta property="og:site_name" content="Afiliados Online" />
+    <meta property="og:locale" content="es_ES" /> {# Specify locale for Open Graph #}
+
+    {# Twitter Card Meta Tags #}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{% block twitter_title %}Afiliados Online{% endblock %}" />
+    <meta name="twitter:description" content="{% block twitter_description %}Encuentra los mejores productos y guías para tus compras. Reseñas honestas y comparativas fiables. {% endblock %}" />
+    <meta name="twitter:image" content="{{ url_for('static', filename='img/twitter-card.jpg') }}" />
+    <meta name="twitter:creator" content="@AfiliadosOnline" /> {# Good idea to add your Twitter handle if you have one #}
+    
+    {# External CSS #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    {# Your Custom CSS #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+
+    {# Favicons #}
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" sizes="any" /> {# 'sizes="any"' for modern browsers #}
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml" /> {# SVG favicon for better scalability #}
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='apple-touch-icon.png') }}" /> {# For Apple devices #}
+
+    {# External JavaScript (Moment.js is good, but often Luxon or native Date are preferred for modern projects if not already heavily using Moment.js elsewhere) #}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js" integrity="sha512-LGX7qC8aGqR0Tz42b1vFf1u+z/wL0E72K2OqF+E+B+L+D+E+F+G+H+I+J+K+L+M+N+O+P+Q+R+S+T+U+V+W+X+Y+Z+A+B+C+D+E+F+G+H+I+J+K+L+M+N+O+P+Q+R+S+T+U+V+W+X+Y+Z" crossorigin="anonymous"></script>
+
+    {# Extra head content for specific pages #}
+    {% block head_extra %}{% endblock %}
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3"> {# Added py-3 for more padding #}
+        <div class="container-fluid px-4"> {# Added px-4 for horizontal padding #}
+            <a class="navbar-brand fw-bold fs-4" href="{{ url_for('publico.index') }}">Afiliados Online</a> {# Increased font size #}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'publico.index' %}active{% endif %}" 
+                           aria-current="{% if request.endpoint == 'publico.index' %}page{% else %}false{% endif %}" 
+                           href="{{ url_for('publico.index') }}">
+                           <i class="fas fa-home me-1"></i> Inicio {# Added home icon #}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'show_categorias' in request.endpoint %}active{% endif %}" 
+                           aria-current="{% if 'show_categorias' in request.endpoint %}page{% else %}false{% endif %}" 
+                           href="{{ url_for('publico.show_categorias') }}">
+                           <i class="fas fa-th-large me-1"></i> Categorías {# Added categories icon #}
+                        </a>
+                    </li>
+                    
+                    {# The "Guías" link has been completely hidden based on your comment. Keep it this way or uncomment if needed. #}
+                    {# {% if request.endpoint != 'publico.index' %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('publico.guias') }}">Guías</a></li>
+                    {% endif %} #}
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'publico.acerca_de' %}active{% endif %}" 
+                           aria-current="{% if request.endpoint == 'publico.acerca_de' %}page{% else %}false{% endif %}" 
+                           href="{{ url_for('publico.acerca_de') }}">
+                           <i class="fas fa-info-circle me-1"></i> Nosotros {# Added info icon #}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'publico.contacto' %}active{% endif %}" 
+                           aria-current="{% if request.endpoint == 'publico.contacto' %}page{% else %}false{% endif %}" 
+                           href="{{ url_for('publico.contacto') }}">
+                           <i class="fas fa-envelope me-1"></i> Contacto {# Added envelope icon #}
+                        </a>
+                    </li>
+
+                    {# Conditional navigation for authenticated users and admins #}
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.is_admin %}
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold" href="{{ url_for('admin.admin_dashboard') }}">
+                                    <i class="fas fa-user-shield me-1"></i> Panel  {# Added admin icon #}
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="{{ url_for('admin.admin_logout') }}">
+                                <i class="fas fa-sign-out-alt me-1"></i> Cerrar {# Added sign-out icon #}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.admin_login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i> Iniciar {# Added sign-in icon #}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <form class="d-flex flex-grow-1 me-3 my-2 my-lg-0" role="search" method="GET" action="{{ url_for('publico.search_results') }}">
+                    <div class="input-group"> {# Wrapped search input and button in input-group for a combined look #}
+                        <input class="form-control" name="q" type="search" placeholder="Buscar productos..." aria-label="Buscar productos" required />
+                        <button class="btn btn-outline-light" type="submit">
+                            <i class="fas fa-search"></i> {# Added search icon #}
+                        </button>
+                    </div>
+                </form>
+                <button id="btn-darkmode" class="btn btn-outline-secondary d-flex align-items-center justify-content-center ms-lg-3" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"> {# ms-lg-3 for spacing on larger screens #}
+                    <i class="fas fa-moon"></i> {# Changed to solid moon for consistency, or keep regular if preferred #}
+                </button>
+                <div id="google_translate_element" class="ms-3 d-flex align-items-center"></div> {# Added d-flex and align-items-center #}
+            </div>
+        </div>
+    </nav>
+
+    {# Define a variable to control sidebar visibility. Default is true. #}
+    {% set show_sidebar = true %}
+    {# Allows child templates to override show_sidebar #}
+    {% block set_sidebar_visibility %}{% endblock %}
+
+    <main class="container mt-4 mb-5"> {# Added mb-5 for more spacing before footer #}
+        {% block breadcrumbs %}{% endblock %}
+
+        <div class="row">
+            {# The main content section should be col-md-8 if the sidebar is col-md-4 #}
+            <section class="{{ 'col-md-8' if show_sidebar else 'col-12' }}" id="main-content">
+                {% block content %}{% endblock %}
+            </section>
+
+            {# The sidebar is col-md-4 as per your partial #}
+            {% if show_sidebar %}
+                <aside class="col-md-4">
+                    {% include 'partials/sidebar_ads.html' %} {# Ensure this partial exists #}
+                </aside>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center p-4 mt-auto border-top"> {# mt-auto pushes footer to bottom #}
+        <div class="container"> {# Added container for better alignment #}
+            <p class="mb-2">© {{ moment().format('YYYY') }} Afiliados Online. Todos los derechos reservados.</p>
+            <p><small>Gracias por visitarnos. Te ayudamos a elegir con confianza.</small></p>
+            
+            {# Assuming partials/_social_links.html contains the social icons with the YouTube link #}
+            {% include 'partials/_social_links.html' %}
+            
+            <nav class="footer-links mt-3">
+                <a href="{{ url_for('publico.cookie_policy') }}" class="text-light mx-2 text-decoration-none hover-underline">Política de Cookies</a>
+                <a href="{{ url_for('publico.privacy_policy') }}" class="text-light mx-2 text-decoration-none hover-underline">Política de Privacidad</a>
+                <a href="{{ url_for('publico.terms_conditions') }}" class="text-light mx-2 text-decoration-none hover-underline">Términos y Condiciones</a>
+                <a href="{{ url_for('publico.sitemap') }}" class="text-light mx-2 text-decoration-none hover-underline">Mapa del Sitio</a>
+                <a href="{{ url_for('publico.robots_txt') }}" class="text-light mx-2 text-decoration-none hover-underline">Robots.txt</a>
+            </nav>
+        </div>
+    </footer>
+
+    <div id="cookie-consent-banner" class="cookie-consent position-fixed bottom-0 start-0 end-0 p-3 shadow-lg bg-secondary text-white"> {# Added bg-secondary text-white #}
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <div class="text-center text-md-start flex-grow-1">
+                <strong>Usamos cookies</strong> para mejorar tu experiencia. Al continuar navegando aceptas nuestra
+                <a href="{{ url_for('publico.cookie_policy') }}" class="text-warning text-decoration-underline">Política de Cookies</a>.
+            </div>
+            <div class="d-flex gap-2 mt-2 mt-md-0">
+                <button id="accept-cookies" class="btn btn-success btn-sm animated-button">Aceptar</button> {# Added animated-button #}
+                <button id="reject-cookies" class="btn btn-outline-light btn-sm animated-button">Rechazar</button> {# Added animated-button #}
+            </div>
+        </div>
+    </div>
+
+    {# Bootstrap and Google Translate JavaScript files #}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
+
+    <script defer>
+        const btnDarkMode = document.getElementById('btn-darkmode');
+        const body = document.body;
+        const consentBanner = document.getElementById('cookie-consent-banner');
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Dark mode initialization
+            const savedDarkMode = localStorage.getItem('darkMode');
+            if (savedDarkMode === 'enabled') {
+                body.classList.add('dark-mode');
+                btnDarkMode.innerHTML = '<i class="fas fa-sun"></i>'; // Changed icon to solid sun
+            } else {
+                 btnDarkMode.innerHTML = '<i class="fas fa-moon"></i>'; // Initial solid moon icon if not dark mode
+            }
+
+            // Dark mode toggle functionality
+            btnDarkMode.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                const isDark = body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+                btnDarkMode.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; // Icon changes with mode
+            });
+
+            // Cookie consent management
+            if (!localStorage.getItem('cookiesAccepted')) {
+                consentBanner.classList.add('show'); // Use 'show' for Bootstrap fade effect
+            }
+
+            document.getElementById('accept-cookies').addEventListener('click', () => {
+                localStorage.setItem('cookiesAccepted', 'true');
+                consentBanner.classList.remove('show');
+                consentBanner.classList.add('fade-out'); // Optional: Add a fade-out class for custom animation
+                setTimeout(() => consentBanner.remove(), 500); // Remove after animation
+            });
+
+            document.getElementById('reject-cookies').addEventListener('click', () => {
+                localStorage.setItem('cookiesAccepted', 'false'); // Consider implications of rejecting cookies (e.g., restricted features)
+                consentBanner.classList.remove('show');
+                consentBanner.classList.add('fade-out'); // Optional: Add a fade-out class for custom animation
+                setTimeout(() => consentBanner.remove(), 500); // Remove after animation
+            });
+        });
+
+        // Google Translate initialization
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'es',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false 
+            }, 'google_translate_element');
+        }
+    </script>
+
+    {# Custom CSS for dark mode, cookie banner animations, and general aesthetics #}
+    <style>
+        /* CSS Variables for theming - Highly recommended for easy dark mode */
+        :root {
+            --light-bg-primary: #ffffff;
+            --light-bg-secondary: #f8f9fa;
+            --light-text-color: #212529;
+            --light-text-muted: #6c757d;
+            --light-card-bg: #ffffff;
+            --light-card-border: #dee2e6;
+            --light-navbar-bg: #343a40; /* Your current dark navbar */
+            --light-navbar-text: #ffffff;
+            --theme-primary-color: #007bff; /* Example blue, adjust to your brand */
+            --theme-secondary-color: #6c757d;
+
+            /* Dark Mode Variables (default to light values, overridden by .dark-mode) */
+            --dark-bg-primary: #1a1a1a;
+            --dark-bg-secondary: #2c2c2c;
+            --dark-text-color: #e0e0e0;
+            --dark-text-muted: #adb5bd;
+            --dark-card-bg: #2c2c2c;
+            --dark-card-border: #444444;
+            --dark-navbar-bg: #1f1f1f;
+            --dark-navbar-text: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--light-bg-primary);
+            color: var(--light-text-color);
+            transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition for dark mode */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: var(--dark-bg-primary);
+            color: var(--dark-text-color);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .dark-mode .navbar {
+            background-color: var(--dark-navbar-bg) !important;
+            color: var(--dark-navbar-text) !important;
+        }
+        .dark-mode .navbar-brand,
+        .dark-mode .nav-link,
+        .dark-mode .btn-outline-light {
+            color: var(--dark-navbar-text) !important; /* Ensure nav items and buttons are visible */
+        }
+        .dark-mode .bg-dark { /* If you use bg-dark elsewhere that needs to change */
+            background-color: var(--dark-bg-secondary) !important; /* Darker secondary background */
+        }
+        .dark-mode .bg-light { /* If you use bg-light elsewhere */
+            background-color: var(--dark-card-bg) !important;
+            color: var(--dark-text-color);
+        }
+        .dark-mode .card, .dark-mode .alert {
+            background-color: var(--dark-card-bg);
+            color: var(--dark-text-color);
+            border-color: var(--dark-card-border);
+        }
+        .dark-mode .text-muted {
+            color: var(--dark-text-muted) !important;
+        }
+        .dark-mode .form-control {
+            background-color: #3b3b3b;
+            color: #e0e0e0;
+            border-color: #555555;
+        }
+        .dark-mode .form-control::placeholder {
+            color: #b0b0b0;
+        }
+        .dark-mode .btn-outline-secondary { /* Dark mode toggle button */
+            border-color: var(--dark-card-border) !important;
+            color: var(--dark-text-muted) !important;
+        }
+        .dark-mode .btn-outline-secondary:hover {
+            background-color: var(--theme-secondary-color) !important;
+            color: var(--dark-navbar-text) !important;
+        }
+        .dark-mode .shadow-sm { /* Adjust shadows for dark mode */
+            box-shadow: 0 .125rem .25rem rgba(0,0,0,.5) !important;
+        }
+        .dark-mode footer {
+             background-color: var(--dark-navbar-bg) !important;
+             border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* General UI/UX Enhancements */
+        .animated-button {
+            transition: all 0.3s ease;
+        }
+        .animated-button:hover {
+            transform: translateY(-2px); /* Subtle lift effect */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .footer-links a.hover-underline:hover {
+            text-decoration: underline !important;
+        }
+
+        /* Cookie Consent Banner Styling */
+        .cookie-consent {
+            z-index: 1070; 
+            transition: all 0.5s ease-in-out; 
+            transform: translateY(100%); 
+            opacity: 0;
+            visibility: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .cookie-consent.show {
+            transform: translateY(0); 
+            opacity: 1;
+            visibility: visible;
+        }
+        .cookie-consent.fade-out {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+        .cookie-consent a {
+            font-weight: bold;
+        }
+        .cookie-consent .btn-outline-light {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .cookie-consent .btn-outline-light:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Google Translate Element Styling */
+        #google_translate_element .goog-te-gadget-simple {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important; /* Corrected 'relleno' to 'padding' */
+            line-height: 1; /* Adjust line-height for better alignment */
+        }
+        #google_translate_element .goog-te-gadget-simple a.goog-te-menu-value {
+            color: var(--light-navbar-text) !important; /* Use CSS variable for consistency */
+            font-weight: 500; /* Make it a bit bolder */
+        }
+        #google_translate_element .goog-te-gadget-simple .goog-te-menu-value span {
+            color: var(--light-navbar-text) !important; /* Use CSS variable for consistency */
+        }
+        /* Specific hover state for Google Translate link text */
+        #google_translate_element .goog-te-gadget-simple a.goog-te-menu-value:hover,
+        #google_translate_element .goog-te-gadget-simple a.goog-te-menu-value:hover span {
+            color: rgba(255, 255, 255, 0.75) !important; /* Lighter grey for hover */
+        }
+        /* Dropdown menu for Google Translate */
+        #google_translate_element .goog-te-combo { 
+            background-color: var(--light-navbar-bg); /* Use navbar background or a slightly lighter dark color */
+            color: var(--light-navbar-text);
+            border: 1px solid var(--theme-secondary-color); /* Use a relevant border color */
+            border-radius: .25rem;
+            padding: .25rem .5rem;
+            font-size: .875rem;
+            line-height: 1.5;
+            height: auto; 
+            appearance: none; /* Hide default arrow */
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); /* Custom arrow for light mode */
+            background-repeat: no-repeat;
+            background-position: right .75rem center;
+            background-size: 16px 12px;
+            cursor: pointer;
+        }
+
+        /* Dark mode specific styles for Google Translate dropdown */
+        .dark-mode #google_translate_element .goog-te-combo { 
+            background-color: var(--dark-navbar-bg); 
+            color: var(--dark-navbar-text);
+            border-color: var(--dark-card-border);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23e0e0e0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); /* Custom arrow for dark mode */
+        }
+
+        /* Focus state for Google Translate dropdown */
+        .goog-te-combo:focus {
+            border-color: var(--theme-primary-color); /* Highlight color on focus */
+            outline: 0;
+            box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+        }
+    </style>
+</body>
+</html>

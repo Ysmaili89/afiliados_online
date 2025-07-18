@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Error interno del servidor - Error 500{% endblock %}
+
+{% block content %}
+<main class="d-flex flex-column justify-content-center align-items-center vh-100 bg-light text-center" role="alert">
+    <div class="container"> {# Corrected 'clase="contenedor"' to 'class="container"' #}
+        <h1 class="display-1 fw-bold text-warning mb-3">500</h1>
+        <h2 class="h3 mb-3">Error interno del servidor</h2>
+        <p class="fs-5 text-secondary mb-4"> {# Corrected 'texto-secundario' to 'text-secondary' #}
+            Ha ocurrido un problema inesperado. Estamos trabajando para solucionarlo.
+        </p>
+        <a href="{{ url_for('public.index') }}" class="btn btn-primary btn-lg shadow-sm" aria-label="Volver al principio">
+            Volver al inicio
+        </a> {# Corrected closing 'uno' to 'a' #}
+    </div> {# Corrected closing 'Div' to 'div' #}
+</main> {# Corrected closing 'principal' to 'main' #}
+{% endblock %} {# Corrected 'Bloque final' to 'endblock' #}

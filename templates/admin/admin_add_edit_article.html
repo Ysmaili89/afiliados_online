@@ -1,0 +1,130 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}
+    {{ 'Editar Artículo' if article else 'Añadir Artículo' }} - Afiliados Online
+{% endblock %} {# Corrected: Bloque final -> endblock #}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" />
+{% endblock %} {# Corrected: Bloque final -> endblock #}
+
+{% block content %} {# Corrected: contenido del bloque -> block content #}
+<h1 class="mb-4">
+    {{ 'Editar Artículo/Guía' if article else 'Añadir Nuevo Artículo/Guía' }}
+</h1> {# Corrected: </H1> -> </h1> #}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+       <form method="POST"
+            action="{{ url_for('admin.admin_edit_article', article_id=article.id) if article and article.id else url_for('admin.admin_add_article') }}"
+            enctype="multipart/form-data"
+            novalidate>
+            {{ form.hidden_tag() }} {# Asegúrate de incluir el token CSRF si no lo haces en admin_base.html #}
+
+            <div class="mb-3"> {# Corrected: clase="mb-3" -> class="mb-3" #}
+                {{ form.titulo.label(class="form-label") }}
+                {{ form.titulo(class="form-control " ~ ('is-invalid' if form.titulo.errors else ''), aria_describedby="tituloHelp") }}
+                {% if form.titulo.errors %}
+                    <div id="tituloHelp" class="invalid-feedback">
+                        {% for error in form.titulo.errors %}
+                            {{ error }}
+                        {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+                    </div> {# Corrected: </Div> -> </div> #}
+                {% endif %}
+            </div> {# Corrected: </Div> -> </div> #}
+
+            <div class="mb-3"> {# Corrected: clase="mb-3" -> class="mb-3" #}
+                {{ form.contenido.label(class="form-label") }}
+                {{ form.contenido(id="contenido", class="form-control " ~ ('is-invalid' if form.contenido.errors else ''), rows="12", aria_describedby="contenidoHelp") }}
+                {% if form.contenido.errors %}
+                    <div id="contenidoHelp" class="invalid-feedback">
+                        {% for error in form.contenido.errors %}
+                            {{ error }}
+                        {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+                    </div> {# Corrected: </Div> -> </div> #}
+                {% endif %}
+            </div> {# Corrected: </Div> -> </div> #}
+
+            <div class="mb-3"> {# Corrected: clase="mb-3" -> class="mb-3" #}
+                {{ form.autor.label(class="form-label") }}
+                {{ form.autor(class="form-control " ~ ('is-invalid' if form.autor.errors else ''), aria_describedby="autorHelp") }}
+                {% if form.autor.errors %}
+                    <div id="autorHelp" class="invalid-feedback">
+                        {% for error in form.autor.errors %}
+                            {{ error }}
+                        {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+                    </div> {# Corrected: </Div> -> </div> #}
+                {% endif %}
+            </div> {# Corrected: </Div> -> </div> #}
+
+            <div class="mb-3"> {# Corrected: clase="mb-3" -> class="mb-3" #}
+                {{ form.imagen.label(class="form-label") }}
+                {{ form.imagen(class="form-control-file" ~ (' is-invalid' if form.imagen.errors else ''), aria_describedby="imagenHelp") }}
+                {% if form.imagen.errors %}
+                    <div id="imagenHelp" class="invalid-feedback">
+                        {% for error in form.imagen.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    {{ 'Actualizar Artículo' if article else 'Añadir Artículo' }}
+                </button>
+                <a href="{{ url_for('admin.admin_articles') }}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+{% endblock %}
+
+{% block scripts_extra %}
+    {{ super() }}
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script>
+        const simplemde = new SimpleMDE({
+            element: document.getElementById("contenido"),
+            spellChecker: false,
+            autosave: {
+                enabled: true,
+                delay: 10000,
+                uniqueId: "article_editor_autosave"
+            },
+            previewRender: function(plainText) {
+                return SimpleMDE.prototype.markdown(plainText);
+            },
+            renderingConfig: {
+                codeSyntaxHighlighting: true
+            },
+            // Corrected: Ensure keys are quoted strings and values are correct JS syntax
+            "status": ["autosave", "lines", "words", "cursor"], // Corrected key and values
+            "toolbar": [ // Corrected key
+                "bold", "italic", "heading", "|",
+                "quote", "unordered-list", "ordered-list", "|",
+                "link", "image", "|",
+                "preview", "side-by-side", "fullscreen", "|",
+                "guide"
+            ]
+        });
+
+        simplemde.codemirror.on("paste", function(_, e) {
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (const item of items) { // Corrected: elemento de artículos -> item of items
+                if (item.type.indexOf("image") === 0) { // Corrected: "imagen" -> "image"
+                    alert("Por favor, sube la imagen a tu servidor y usa su URL. No se admiten imágenes pegadas directamente.");
+                }
+            }
+        });
+    </script>
+{% endblock %} {# Corrected: Bloque final -> endblock #}

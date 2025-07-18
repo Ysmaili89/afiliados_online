@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ articulo.titulo | e }} - Afiliados Online{% endblock %}
+{% block meta_description %}{{ articulo.contenido | truncate(160, True, '...') | e }}{% endblock %}
+{% block meta_keywords %}{{ articulo.titulo | e }}, guía, reseña, {{ articulo.autor | e }}{% endblock %}
+
+{% block meta %}
+<meta property="og:title" content="{{ articulo.titulo | e }}">
+<meta property="og:description" content="{{ articulo.contenido | truncate(160, True, '...') | e }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ request.url | e }}">
+{% if articulo.imagen %}
+<meta property="og:image" content="{{ articulo.imagen | e }}">
+{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ articulo.titulo | e }}">
+<meta name="twitter:description" content="{{ articulo.contenido | truncate(160, True, '...') | e }}">
+{% if articulo.imagen %}
+<meta name="twitter:image" content="{{ articulo.imagen | e }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('publico.index') }}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('publico.guias') }}">Guías y Artículos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ articulo.titulo | e }}</li>
+        </ol>
+    </nav>
+
+    <article class="card shadow-sm mb-4">
+        {% if articulo.imagen %}
+        <img src="{{ articulo.imagen | e }}" loading="lazy" class="card-img-top img-fluid" alt="Imagen ilustrativa del artículo '{{ articulo.titulo | e }}'" style="max-height: 400px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+            <h1 class="card-title text-primary mb-3">{{ articulo.titulo | e }}</h1>
+            <p class="card-subtitle text-muted mb-3">
+                Por <span class="fw-semibold">{{ articulo.autor | e }}</span> el
+                <time datetime="{{ articulo.fecha.isoformat() }}" aria-label="Fecha de publicación">
+                    {{ articulo.fecha.strftime('%d de %B de %Y') }}
+                </time>
+            </p>
+            <section class="article-content">
+                {{ articulo.contenido | markdown }}
+            </section>
+            <hr>
+            <a href="{{ url_for('publico.guias') }}" class="btn btn-outline-secondary" aria-label="Volver a la página de Guías y Artículos">
+                <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Volver a Guías y Artículos
+            </a>
+        </div>
+    </article>
+</div>
+{% endblock %}

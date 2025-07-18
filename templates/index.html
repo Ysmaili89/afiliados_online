@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Afiliados Online{% endblock %}
+
+{% block meta_description %}
+Descubre productos recomendados, guías de compra, comparativas y ofertas seleccionadas por expertos en Afiliados Online.
+{% endblock %}
+
+{% block meta_keywords %}
+productos destacados, ofertas online, comparativas, reseñas, recomendaciones, guías de compra
+{% endblock %}
+
+{% block content %}
+    <header class="mb-5 text-center"> {# Added text-center for aesthetic and increased mb-4 to mb-5 for more spacing #}
+        <h1 class="display-4 fw-bold">Productos Destacados</h1> {# Added fw-bold for stronger emphasis #}
+        <p class="lead text-muted">Seleccionamos las mejores ofertas y productos populares para ayudarte a comprar con confianza.</p> {# Changed text-secondary to text-muted #}
+    </header>
+
+    <section class="row">
+        {% for p in productos %}
+        <article class="col-md-4 mb-4 d-flex"> {# Added d-flex to ensure cards in a row have equal height #}
+            <div class="card h-100 shadow-sm rounded-3 overflow-hidden"> {# Added overflow-hidden for img border-radius to work correctly #}
+                <a href="{{ url_for('publico.product_detail', slug=p.slug) }}" aria-label="Ver más sobre {{ p.nombre }}">
+                    <img src="{{ p.imagen }}"
+                         class="card-img-top img-fluid rounded-top"
+                         alt="{{ p.nombre }}"
+                         style="object-fit: cover; height: 200px; width: 100%;" {# Added width: 100% to ensure image fills container #}
+                         loading="lazy"
+                    >
+                </a>
+                <div class="card-body d-flex flex-column">
+                    <a href="{{ url_for('publico.product_detail', slug=p.slug) }}"
+                       class="text-decoration-none text-dark hover-underline" {# Added hover-underline for UX #}
+                       aria-label="Ver más sobre {{ p.nombre }}">
+                        <h2 class="card-title h5 mb-3">{{ p.nombre }}</h2> {# Added mb-3 for spacing below title #}
+                    </a>
+
+                    <p class="card-text text-success fw-bold fs-5 mb-3">
+                        <i class="fas fa-dollar-sign me-1"></i>{{ p.precio }} {# Added dollar sign icon #}
+                    </p>
+
+                    {# Description removed as per your comment #}
+                    {# <p class="card-text text-truncate" style="max-height: 4.5em;">{{ p.descripcion | truncate(100, True) }}</p> #}
+
+                    <div class="mt-auto d-flex gap-2">
+                        <a href="{{ url_for('publico.product_detail', slug=p.slug) }}"
+                           class="btn btn-outline-primary btn-sm flex-fill py-2 animated-button" {# Increased py-1 to py-2 for better button height, added animated-button #}
+                           aria-label="Ver detalles de {{ p.nombre }}"> {# More specific aria-label #}
+                            <i class="fas fa-info-circle me-1"></i> Ver más
+                        </a>
+                        <a href="{{ p.link }}"
+                           class="btn btn-success btn-sm flex-fill py-2 animated-button" {# Increased py-1 to py-2 for better button height, added animated-button #}
+                           target="_blank" rel="sponsored noopener nofollow"
+                           aria-label="Comprar {{ p.nombre }} ahora"> {# More specific aria-label #}
+ <i class="fas fa-shopping-cart me-1"></i> Comprar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info text-center" role="alert"> {# Added text-center #}
+                <i class="fas fa-exclamation-circle me-2"></i> No hay productos disponibles en este momento. Vuelve pronto para más recomendaciones.
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="my-5 text-center py-5 bg-light rounded-3 shadow-sm"> {# Added padding, background, rounded corners and shadow #}
+        <h2 class="mb-3 display-6 fw-bold">¿Por qué confiar en nosotros?</h2> {# Adjusted heading size and weight #}
+        <p class="mb-4 lead px-md-5">Nuestro equipo analiza, compara y selecciona productos de forma imparcial para que tomes decisiones informadas con confianza.</p> {# Added horizontal padding for lead text #}
+        <a href="{{ url_for('publico.acerca_de') }}" class="btn btn-info btn-lg px-4 animated-button" role="button">
+            <i class="fas fa-users me-2"></i> Conoce más sobre nosotros
+        </a>
+    </section>
+
+    {# NEW SECTION FOR TESTIMONIALS #}
+    {% if testimonios %} {# Check if testimonials exist #}
+    <section class="my-5 py-5">
+        <h2 class="text-center mb-4 display-6 fw-bold">Lo que dicen nuestros usuarios</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"> {# Responsive grid for testimonials #}
+            {% for t in testimonios %}
+            <div class="col d-flex">
+                <div class="card h-100 shadow-sm border-0 rounded-3">
+                    <div class="card-body d-flex flex-column">
+                        <div class="text-warning mb-2">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="card-text flex-grow-1">{{ t.content }}</p>
+                        <footer class="blockquote-footer mt-3">
+                            <cite title="Source Title">{{ t.author }}</cite>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+{% endblock %}

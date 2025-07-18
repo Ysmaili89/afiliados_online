@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Resultados de Búsqueda para "{{ query }}"{% endblock %}
+
+{% block meta_description %}
+    Resultados de búsqueda en Afiliados Online para "{{ query }}". Encuentra productos y guías relevantes para ayudarte a decidir mejor.
+{% endblock %}
+
+{% block meta_keywords %}
+    búsqueda, {{ query | lower }}, productos, guías, artículos, resultados
+{% endblock %}
+
+{% block content %}
+<div class="container my-5" role="main" aria-labelledby="search-results-title">
+    <header class="mb-4">
+        <h1 id="search-results-title" class="fw-bold">Resultados de Búsqueda para: <mark>{{ query }}</mark></h1>
+    </header>
+
+    {% if not productos and not articulos %}
+    <div class="alert alert-warning" role="alert" aria-live="polite">
+        No se encontraron resultados para su búsqueda. Intente con otras palabras clave.
+    </div>
+    {% endif %}
+
+    {% if productos %}
+    <section class="search-results-section mb-5" aria-label="Productos encontrados">
+        <h2 class="text-primary mb-3">Productos Encontrados</h2>
+        <div class="row" aria-live="polite">
+            {% for p in productos %}
+            <article class="col-md-6 col-lg-4 mb-4 d-flex" itemscope itemtype="https://schema.org/Product">
+                <div class="card flex-fill h-100 shadow-sm"> {# Corrected from Tarjeta #}
+                    {% if p.imagen %}
+                    <img src="{{ p.imagen }}" class="card-img-top" alt="Imagen de {{ p.nombre | default('producto') }}" itemprop="image" loading="lazy">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default-product.jpg') }}" class="card-img-top" alt="" loading="lazy" aria-hidden="true"> {# Corrected from estático, perezoso, verdadero #}
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="card-title h5" itemprop="name">{{ p.nombre }}</h3>
+                        <p class="text-muted fw-semibold mb-2" itemprop="offers" itemscope itemtype="https://schema.org/Offer"> {# Corrected from ofertas #}
+                            <span itemprop="priceCurrency" content="USD">$</span>
+                            <span itemprop="price">{{ p.precio | replace('$', '') }}</span>
+                        </p>
+                        <p class="card-text" itemprop="description">{{ p.descripcion | truncate(100, True) }}</p>
+                        <div class="mt-auto d-flex gap-2">
+                            <a href="{{ url_for('publico.product_detail', slug=p.slug) }}" class="btn btn-outline-primary btn-sm" aria-label="Ver detalles de {{ p.nombre }}">Ver Detalles</a>
+                            <a href="{{ p.link }}" class="btn btn-success btn-sm" target="_blank" rel="sponsored noopener nofollow" aria-label="Comprar {{ p.nombre }}">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {# 
+    {% if articulos %}
+    <section class="search-results-section" aria-label="Guías y artículos encontrados">
+        <h2 class="text-primary mb-3">Guías y Artículos Encontrados</h2>
+        <div class="list-group" aria-live="polite">
+            {% for articulo in articulos %}
+            <a href="{{ url_for('publico.guia_detalle', slug=articulo.slug) }}" class="list-group-item list-group-item-action py-3" aria-label="Leer artículo {{ articulo.titulo }}">
+                <h3 class="mb-1 text-primary h6">{{ articulo.titulo }}</h3>
+                <small class="d-block mb-2 text-muted">Publicado: {{ articulo.fecha_formateada }}</small>
+                <p class="mb-0">{{ articulo.contenido | striptags | truncate(150, True) }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    #}
+
+    {# Controles de paginación #}
+    {% if total_pages > 1 %} {# Corrected from si total_pages > 1 #}
+    <nav aria-label="Resultados de búsqueda de paginación">
+        <ul class="pagination justify-content-center">
+            {% if page > 1 %} {# Corrected from si la página > 1 #}
+            <li class="page-item"> {# Corrected from in #}
+                <a class="page-link" href="{{ url_for('publico.search_results', q=query, page=page-1) }}" aria-label="Página anterior">Anterior</a>
+            </li>
+            {% endif %}
+            {% for p_num in range(1, total_pages + 1) %} {# Corrected from para p_num en rango #}
+            <li class="page-item {% if p_num == page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('publico.search_results', q=query, page=p_num) }}" aria-label="Ir a la página {{ p_num }}">{{ p_num }}</a>
+            </li>
+            {% endfor %} {# Corrected from endpara #}
+            {% if page < total_pages %} {# Corrected from si la página < total_pages #}
+            <li class="page-item"> {# Corrected from in #}
+                <a class="page-link" href="{{ url_for('publico.search_results', q=query, page=page+1) }}" aria-label="Página siguiente">Siguiente</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav> {# Corrected from </ninguno> #}
+    {% endif %}
+
+</div>
+{% endblock %} {# Corrected from Bloque final #}

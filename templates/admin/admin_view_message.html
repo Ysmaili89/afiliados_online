@@ -1,0 +1,100 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Ver Mensaje de Contacto #{{ message.id }}</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message_flash in messages %} {# Renombrado message a message_flash para evitar conflicto #}
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message_flash }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Detalles del Mensaje</h6>
+        </div>
+        <div class="card-body">
+            <div class="class="mb-3"">
+                <strong>De:</strong> {{ message.name }} ({{ message.email }})
+            </div>
+            <div class="class="mb-3"">
+                <strong>Fecha:</strong> {{ message.timestamp | datetime }}
+            </div>
+            <div class="class="mb-3"">
+                <strong>Estado:</strong>
+                {% if message.is_read %}
+                    <span class="badge bg-success">Leído</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">No Leído</span>
+                {% endif %}
+                {% if message.is_archived %}
+                    <span class="badge bg-info">Archivado</span>
+                {% endif %}
+            </div>
+            <div class="class="mb-3"">
+                <strong>Mensaje:</strong>
+                <p class="border p-3 rounded bg-light">{{ message.message }}</p>
+            </div>
+
+            <div class="class="mb-3"">
+                <strong>Votos:</strong>
+                <span class="badge bg-success me-2"><i class="fas fa-thumbs-up"></i> {{ message.likes }}</span>
+                <span class="badge bg-danger"><i class="fas fa-thumbs-down"></i> {{ message.dislikes }}</span>
+            </div>
+
+            <hr>
+
+            <h6 class="m-0 font-weight-bold text-primary mb-3">Acciones y Respuesta</h6>
+            <form method="POST">
+                {{ form.csrf_token }}
+
+                <div class="form-group mb-3">
+                    {{ form.response_text.label(class="form-label") }}
+                    {{ form.response_text(class="form-control", rows="5") }}
+                    {% for error in form.response_text.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                    {% if message.response_text %}
+                        <small class="form-text text-muted mt-2">Última respuesta: {{ message.response_text }} ({{ message.response_timestamp | datetime }})</small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group form-check mb-3">
+                    {{ form.is_read(class="form-check-input") }}
+                    {{ form.is_read.label(class="form-check-label") }}
+                </div>
+                <div class="form-group form-check mb-3">
+                    {{ form.is_archived(class="form-check-input") }}
+                    {{ form.is_archived.label(class="form-check-label") }}
+                </div>
+
+                {{ form.submit_response(class="btn btn-primary me-2") }}
+                <a href="{{ url_for('admin.admin_messages') }}" class="btn btn-secondary">Volver a Mensajes</a>
+            </form>
+
+            <div class="mt-4">
+                <h6 class="m-0 font-weight-bold text-primary mb-3">Votar Mensaje</h6>
+                <form action="{{ url_for('admin.admin_like_message', message_id=message.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-success me-2"><i class="fas fa-thumbs-up"></i> Me gusta </button>
+                </form>
+                <form action="{{ url_for('admin.admin_dislike_message', message_id=message.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-thumbs-down"></i> Like</button>
+                </form>
+            </div>
+
+            <div class="mt-4">
+                <h6 class="m-0 font-weight-bold text-primary mb-3">Eliminar Mensaje</h6>
+                <form action="{{ url_for('admin.admin_delete_message', message_id=message.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este mensaje permanentemente? Esta acción no se puede deshacer.');">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Eliminar mensaje</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

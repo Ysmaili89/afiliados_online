@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Sobre Nosotros - Afiliados Online{% endblock %}
+
+{% block meta_description %}
+Descubre quiénes somos en Afiliados Online: un equipo comprometido en ayudarte a tomar decisiones inteligentes con información honesta, comparativas útiles y transparencia total.
+{% endblock %}
+
+{% block meta_keywords %}
+Afiliados Online, sobre nosotros, confianza, análisis de productos, recomendaciones honestas, comparativas, compra inteligente
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <header class="text-center mb-5">
+    <h1 class="display-5 fw-bold">Sobre Nosotros: Tu Aliado en Compras Inteligentes</h1>
+    <p class="lead text-muted">Transparencia, confianza y compromiso en cada contenido que compartimos contigo.</p>
+  </header>
+
+  <section class="bg-light p-4 p-md-5 rounded shadow-sm mb-5">
+    <p class="fs-5">
+      En <strong>Afiliados Online</strong> creemos que comprar con seguridad comienza con información verificada y recomendaciones genuinas. Nuestra misión es clara: ayudarte a tomar <strong>decisiones inteligentes</strong>, sin presiones ni intereses ocultos.
+    </p>
+    <p>
+      Cada guía, reseña y comparativa nace del <strong>análisis ético y objetivo</strong> de nuestro equipo independiente. No nos limitamos a promocionar productos; evaluamos sus ventajas, advertimos sobre sus limitaciones y te proponemos <strong>alternativas reales</strong> si es necesario.
+    </p>
+    <p>
+      Si no lo usaríamos nosotros, no te lo recomendaremos. Así de simple. Nuestro compromiso es contigo, no con las marcas.
+    </p>
+    <p class="text-center mt-4">
+      <strong>Afiliados Online</strong>: donde la confianza y la honestidad se convierten en decisiones de compra inteligentes.
+    </p>
+  </section>
+
+  <section class="mb-5 text-center" aria-labelledby="valores-title">
+    <h2 id="valores-title" class="mb-4 fw-semibold">Nuestros Valores Fundamentales</h2>
+    <div class="row gy-4">
+      {% set valores = [
+        {'icon': 'fa-lightbulb', 'color': 'text-warning', 'title': 'Transparencia Total', 'description': 'Siempre revelamos nuestras relaciones de afiliación y mantenemos una postura objetiva en todas nuestras evaluaciones.'},
+        {'icon': 'fa-handshake', 'color': 'text-primary', 'title': 'Confianza y Honestidad', 'description': 'Priorizamos la honestidad y construimos relaciones duraderas con nuestros lectores.'},
+        {'icon': 'fa-star', 'color': 'text-success', 'title': 'Compromiso con la Calidad', 'description': 'Contenido útil, detallado y actualizado gracias a una investigación profunda y constante.'}
+      ] %}
+      {% for valor in valores %}
+        <div class="col-md-4">
+          <div class="p-4 border rounded shadow-sm h-100 d-flex flex-column align-items-center transition-hover bg-white">
+            <i class="fas {{ valor.icon }} fa-3x {{ valor.color }} mb-3"></i>
+            <h3 class="h5 fw-bold">{{ valor.title }}</h3>
+            <p class="text-muted">{{ valor.description }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="mb-5" aria-labelledby="testimonios-title">
+    <h2 id="testimonios-title" class="mb-4 fw-semibold text-center">Lo Que Dicen Nuestros Lectores</h2>
+    <div id="testimonialsCarousel" class="carousel slide" data-bs-ride="carousel">
+      {% if testimonials %}
+        <div class="carousel-inner">
+          {% for testimonial in testimonials %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+              <div class="card p-4 mx-auto shadow testimonial-card">
+                <blockquote class="blockquote mb-0">
+                  <p class="fs-5 fst-italic">“{{ testimonial.content }}”</p>
+                  <footer class="blockquote-footer mt-3" style="color: #212529; font-weight: 600;">{{ testimonial.author }}</footer>
+                  <div class="d-flex justify-content-end mt-2">
+                    <span class="badge bg-success me-2">
+                      <i class="fas fa-thumbs-up me-1"></i> {{ testimonial.likes }}
+                    </span>
+                    <span class="badge bg-danger">
+                      <i class="fas fa-thumbs-down me-1"></i> {{ testimonial.dislikes }}
+                    </span>
+                  </div>
+                </blockquote>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialsCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialsCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+          <span class="visually-hidden">Siguiente</span>
+        </button>
+      {% else %}
+        <div class="alert alert-info text-center" role="alert">
+          <i class="fas fa-info-circle me-2"></i> Actualmente no hay testimonios disponibles. ¡Sé el primero en compartir tu experiencia!
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="mt-5 p-4 border rounded shadow bg-white" aria-labelledby="submit-testimonial-title">
+    <h2 id="submit-testimonial-title" class="mb-4 fw-semibold text-center">Comparte Tu Experiencia</h2>
+    <p class="text-center lead mb-4">
+      Tu opinión nos importa. Ayúdanos a seguir creciendo y a guiar a otros compartiendo tu experiencia con <strong>Afiliados Online</strong>.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-4">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('publico.acerca_de') }}" novalidate>
+      {{ testimonial_form.csrf_token }}
+      <div class="mb-3">
+        {{ testimonial_form.author.label(class="form-label") }}
+        {{ testimonial_form.author(class="form-control", placeholder="Tu nombre o alias (ej. Comprador Inteligente)") }}
+        {% for error in testimonial_form.author.errors %}
+          <div class="text-danger"><small>{{ error }}</small></div>
+        {% endfor %}
+      </div>
+      <div class="mb-3">
+        {{ testimonial_form.content.label(class="form-label") }}
+        {{ testimonial_form.content(class="form-control", rows="5", placeholder="Escribe tu testimonio aquí") }}
+        {% for error in testimonial_form.content.errors %}
+          <div class="text-danger"><small>{{ error }}</small></div>
+        {% endfor %}
+      </div>
+      <div style="display:none;">
+        {{ testimonial_form.fax_number.label }}
+        {{ testimonial_form.fax_number(class="form-control") }}
+      </div>
+      <div class="d-grid">
+        {{ testimonial_form.submit(class="btn btn-primary btn-lg") }}
+      </div>
+    </form>
+  </section>
+</div>
+
+<style>
+  .transition-hover {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .transition-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+  }
+
+  .testimonial-card {
+    max-width: 720px;
+    background-color: #fdfdfd;
+    border-left: 5px solid #0d6efd;
+  }
+
+  @media (max-width: 768px) {
+    .testimonial-card {
+      padding: 1.5rem;
+    }
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Categorías de Productos - Afiliados Online{% endblock %}
+{% block meta_description %}Navega por todas nuestras categorías de productos: electrónica, hogar, fitness y más. Encuentra lo que buscas fácilmente y toma decisiones de compra informadas.{% endblock %}
+{% block meta_keywords %}categorías, subcategorías, electrónica, hogar, fitness, productos online, comprar, comparativas, reviews, mejores productos{% endblock %}
+
+{% block content %}
+<div class="container py-4"> {# Corrected 'contenedor' to 'container' (Bootstrap class) #}
+    <h1 class="mb-4 text-center fw-bold">Explorar Categorías de Productos</h1> {# Added fw-bold #}
+    <p class="lead text-center mb-5">Encuentra el producto perfecto navegando por nuestras secciones especializadas y descubre lo que Afiliados Online tiene para ofrecerte.</p>
+
+    {% if categorias %}
+        {% for category in categorias %}
+            <section
+                class="mb-5 p-4 border rounded shadow-sm bg-light animate__animated animate__fadeInUp"
+                role="region"
+                aria-labelledby="category-{{ category.id }}"
+            >
+                <h2 id="category-{{ category.id }}" class="mb-3 text-primary fw-semibold d-flex align-items-center">
+                    {# Optional: Add an icon for the main category #}
+                    {% if category.icon_class %}<i class="{{ category.icon_class }} me-2"></i>{% endif %}
+                    {{ category.nombre }}
+                </h2>
+
+                {% if category.subcategorias %}
+                    <ul class="list-group list-group-flush" role="list">
+                        {% for sub in category.subcategorias %}
+                            {% set count = product_counts.get(sub.id, 0) %}
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action" {# Added list-group-item-action for hover effect #}
+                                role="listitem"
+                            >
+                                <a
+                                    href="{{ url_for('publico.productos_por_slug', slug=sub.slug) }}"
+                                    class="text-decoration-none text-dark fw-medium subcategory-link" {# Added text-dark and fw-medium, and custom class for hover #}
+                                    aria-label="Explorar subcategoría {{ sub.nombre }}"
+                                >
+                                    {{ sub.nombre }}
+                                </a>
+                                <span
+                                    class="badge bg-secondary rounded-pill py-2 px-3" {# Corrected 'BG-píldora-secundaria redondeada' to 'badge bg-secondary rounded-pill py-2 px-3' #}
+                                    aria-label="{{ count }} {{ 'producto' if count == 1 else 'productos' }} en {{ sub.nombre }}"
+                                >
+                                    {{ count }} {{ 'producto' if count == 1 else 'productos' }}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted fst-italic">Esta categoría aún no tiene subcategorías disponibles.</p>
+                {% endif %}
+            </section>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-warning text-center" role="alert"> {# Corrected 'alerta-advertencia' to Bootstrap 'alert alert-warning' #}
+            <i class="fas fa-exclamation-triangle me-2"></i> No hay categorías disponibles en este momento. Por favor, inténtalo más tarde.
+        </div>
+    {% endif %}
+</div>
+
+{# Custom Styles for this page #}
+<style>
+    /* Ensure the subcategory link changes color on hover within the list item */
+    .list-group-item-action:hover .subcategory-link {
+        color: var(--bs-primary) !important; /* Use Bootstrap primary color or your brand color */
+        text-decoration: underline;
+    }
+
+    /* Dark mode adjustments */
+    body.dark-mode .bg-light {
+        background-color: #2c2c2c !important;
+        color: #e0e0e0;
+        border-color: #444 !important;
+    }
+    body.dark-mode .text-primary {
+        color: #79a6ed !important; /* Lighter primary color for dark mode */
+    }
+    body.dark-mode .text-dark {
+        color: #e0e0e0 !important;
+    }
+    body.dark-mode .list-group-item {
+        background-color: #2c2c2c !important;
+        color: #e0e0e0;
+        border-color: #444 !important;
+    }
+    body.dark-mode .badge.bg-secondary {
+        background-color: #555 !important;
+        color: #e0e0e0;
+    }
+    body.dark-mode .alert-warning {
+        background-color: #4a3c00 !important; /* Darker warning background */
+        color: #ffc107 !important; /* Original warning text color */
+        border-color: #8b6e00 !important;
+    }
+</style>
+
+{% endblock %}

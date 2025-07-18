@@ -1,0 +1,51 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %} {# Corrected: contenido del bloque -> block content #}
+<div class="container-fluid"> {# Corrected: contenedor-fluido -> container-fluid #}
+    <h1 class="h3 mb-4 text-gray-800">{% if link %}Edit{% else %}Add{% endif %} Social Media Link</h1> {# Corrected: Editar, Añadir #}
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {# Corrected: con mensajes = get_flashed_messages(with_categories=verdadero) -> with messages = get_flashed_messages(with_categories=true) #}
+        {% if messages %} {# Corrected: si mensajes -> if messages #}
+            {% for category, message in messages %} {# Corrected: para categoría, mensaje en mensajes -> for category, message in messages #}
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }} {# Corrected: mensaje -> message #}
+                </div> {# Corrected: </Div> -> </div> #}
+            {% endfor %} {# Corrected: endpara -> endfor #}
+        {% endif %}
+    {% endwith %} {# Corrected: endcon -> endwith #}
+
+    <div class="card shadow mb-4"> {# Corrected: sombra de tarjeta mb-4 -> card shadow mb-4 #}
+        <div class="card-header py-3"> {# Corrected: cabecera-de-tarjeta py-3 -> card-header py-3 #}
+            <h6 class="m-0 font-weight-bold text-primary">Social Media Link Details</h6> {# Corrected: Detalles del Enlace de Red Social #}
+        </div> {# Corrected: </Div> -> </div> #}
+        <div class="card-body"> {# Corrected: cuerpo-de-la-tarjeta -> card-body #}
+            <form method="POST"> {# Corrected: método de formulario="PUBLICAR" -> form method="POST" #}
+                {{ form.csrf_token }}
+                <div class="form-group mb-3">
+                    {{ form.platform.label(class="form-label") }} {# Corrected: etiqueta-formulario -> form-label #}
+                    {{ form.platform(class="form-control") }} {# Corrected: control-de-formulario -> form-control #}
+                    {% for error in form.platform.errors %} {# Corrected: por error en form.platform.errors -> for error in form.platform.errors #}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %} {# Corrected: endpara -> endfor #}
+                </div> {# Corrected: </Div> -> </div> #}
+                <div class="form-group mb-3"> {# Corrected: clase="grupo-formulario mb-3" -> class="form-group mb-3" #}
+                    {{ form.url.label(class="form-label") }} {# Corrected: etiqueta-formulario -> form-label #}
+                    {{ form.url(class="form-control") }} {# Corrected: control-de-formulario -> form-control #}
+                    {% for error in form.url.errors %} {# Corrected: por error en form.url.errors -> for error in form.url.errors #}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %} {# Corrected: endpara -> endfor #}
+                </div> {# Corrected: </Div> -> </div> #}
+                <div class="form-check mb-3"> {# Corrected: comprobación-de-formulario-grupo mb-3 -> form-check mb-3 #}
+                    {{ form.is_visible(class="form-check-input") }} {# Corrected: entrada-de-verificación-de-formulario -> form-check-input #}
+                    {{ form.is_visible.label(class="form-check-label") }} {# Corrected: etiqueta-de-verificación-formulario -> form-check-label #}
+                    {% for error in form.is_visible.errors %} {# Corrected: por error en form.is_visible.errores -> for error in form.is_visible.errors #}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %} {# Corrected: endpara -> endfor #}
+                </div> {# Corrected: </Div> -> </div> #}
+                {{ form.submit(class="btn btn-primary") }}
+                <a href="{{ url_for('admin.admin_social_media') }}" class="btn btn-secondary">Cancel</a> {# Corrected: Cancelar -> Cancel #}
+            </form> {# Corrected: </formulario> -> </form> #}
+        </div>
+    </div>
+</div>
+{% endblock %} {# Corrected: Bloque final -> endblock #}

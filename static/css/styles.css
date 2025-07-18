@@ -1,0 +1,1320 @@
+/* This line was problematic and has been removed or commented out.
+   It should not be at the very beginning of the file outside of a CSS rule. */
+/* color: #ffffff !important; */
+
+/* Redundant !important removed from root color definitions as they are already variables */
+HTML {
+  font-size: 16px; /* Ensures 1rem is 16px */
+}
+
+:root {
+  /* Main Colors - Deep blue combined with vibrant accents */
+  --color-primario: HSL(222, 35%, 18%); /* Deeper, richer blue */
+  --color-primary-hover: HSL(222, 40%, 12%); /* Darker blue for hover */
+  --color-accent: HSL(36, 100%, 50%); /* Vibrant Amber Gold */
+  --color-blanco: #FAFAFA; /* Soft white for less harsh contrast */
+  --color-negro: #121212; /* Deep but not absolute black (less eye strain) */
+  --color-navy-blue: HSL(222, 70%, 35%); /* Saturated Navy Blue for buttons */
+  --color-navy-blue-hover: HSL(222, 75%, 25%); /* Even darker hover for navy */
+  --color-mint-green: HSL(150, 60%, 45%); /* More vibrant Mint Green */
+  --color-coral-red: HSL(6, 75%, 58%); /* More vibrant Coral Red */
+  /* ... continue with the rest of your CSS variables */
+
+  /* Text Colors */
+  --color-text-light: var(--color-blanco); /* Used for text on dark backgrounds */
+  --color-text-dark: var(--color-negro); /* General text, now deep black */
+  --color-text-muted: hsl(0, 0%, 45%); /* Medium grey for muted text */
+
+  /* Background Colors */
+  --color-bg-light: HSL(210, 16%, 98%); /* Off-white with a very soft blue tint */
+  --color-bg-card-light: var(--color-blanco); /* White for cards in light mode */
+  --color-bg-dark: var(--color-primario); /* Dark background for dark mode */
+  --color-bg-card-dark: HSL(222, 20%, 22%); /* Dark bluish-grey for cards in dark mode */
+
+  /* Sidebar, Footer, and Navbar Colors */
+  --color-sidebar-bg: var(--color-primario); /* Deep blue for sidebar */
+  --color-sidebar-text: var(--color-blanco); /* White text */
+  --color-sidebar-link-hover: var(--color-accent); /* Amber Gold for hover */
+
+  /* Borders and Shadows */
+  --color-border-light: HSL(210, 10%, 88%); /* Lighter border */
+  --color-border-dark: hsl(0, 0%, 35%); /* Softer dark border */
+  --shadow-sm: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.07); /* Converted to rem */
+  --shadow-md: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15); /* Converted to rem */
+  --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.25); /* Converted to rem */
+  --shadow-accent: 0 0.25rem 0.9375rem hsla(36, 100%, 50%, 0.4); /* Soft golden shadow, converted to rem */
+
+  /* Transitions */
+  --transition-ease: all 0.3s ease-in-out;
+
+  /* RGB values for rgba() functions */
+  --rgb-primary: 46, 56, 73; /* RGB of new primary */
+  --rgb-accent: 255, 165, 0; /* RGB of golden accent */
+  --rgb-black: 18, 18, 18;
+}
+
+/* --- Base Reset & Typography --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--color-text-dark);
+  background-color: var(--color-bg-light);
+  transition: var(--transition-ease);
+  -webkit-font-smoothing: antialiased; /* Smoother font rendering */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduced motion preference for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.container {
+  max-width: 75rem; /* 1200px / 16px = 75rem */
+  margin: 0 auto;
+  padding: 1.25rem 0.9375rem; /* 20px 15px converted to rem */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-primario); /* Use primary color for headings */
+  margin: 0.9375rem 0 0.46875rem; /* Converted to rem */
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.75rem;
+}
+h4 {
+  font-size: 1.5rem;
+}
+h5 {
+  font-size: 1.25rem;
+}
+h6 {
+  font-size: 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--color-text-dark);
+  font-size: 1rem;
+}
+
+a {
+  color: var(--color-primario); /* Default link color */
+  text-decoration: none;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+a:hover,
+a:focus {
+  color: var(--color-accent); /* Use vibrant accent color on hover */
+  text-decoration: underline;
+  outline: none; /* Remove default outline, relying on custom focus styles */
+}
+
+/* --- Search Input --- */
+.search-input {
+  width: 12.5rem; /* 200px converted to rem */
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border-light);
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-dark);
+  background-color: var(--color-bg-card-light);
+  transition: var(--transition-ease);
+}
+
+.search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.search-input:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 0.1875rem rgba(var(--rgb-primary), 0.15); /* Converted to rem */
+  outline: none;
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-ease);
+  border: none;
+  user-select: none;
+  text-align: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  /* Default style for all buttons */
+  background-color: var(--color-navy-blue); /* Navy Blue */
+  color: var(--color-blanco); /* White text for contrast */
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: var(--color-accent); /* Use orange accent for visible hover */
+  color: var(--color-negro); /* Change text to black for better contrast with orange */
+  box-shadow: var(--shadow-md);
+  transform: translateY(-0.125rem); /* Converted to rem */
+  outline: none;
+}
+
+.btn-primary {
+  background-color: var(--color-navy-blue); /* Navy Blue */
+  color: var(--color-blanco); /* White text for contrast */
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--color-accent); /* Orange accent on hover */
+  color: var(--color-negro);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-0.125rem);
+  outline: none;
+}
+
+.btn-secondary {
+  background-color: var(--color-text-muted); /* Muted color for secondary buttons */
+  color: var(--color-blanco); /* White text for contrast */
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: var(--color-primario); /* Primary dark blue on hover */
+  box-shadow: var(--shadow-md);
+  transform: translateY(-0.125rem);
+}
+
+.btn-success {
+  background-color: var(--color-mint-green); /* Mint green */
+  color: var(--color-blanco); /* White text for better contrast */
+  box-shadow: var(--shadow-sm);
+  border: none;
+  border-radius: 0.5rem; /* 8px converted to rem */
+  padding: 0.4rem 0.6rem; /* Made smaller */
+  font-size: 0.8rem; /* Made smaller */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-success:hover,
+.btn-success:focus {
+  background-color: HSL(150, 70%, 38%); /* Darker mint green on hover */
+  box-shadow: var(--shadow-md);
+  transform: translateY(-0.125rem);
+}
+
+.btn-danger {
+  background-color: var(--color-coral-red); /* Coral red */
+  color: var(--color-blanco); /* White text for contrast */
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: HSL(6, 80%, 48%); /* Darker coral red on hover */
+  box-shadow: var(--shadow-md);
+  transform: translateY(-0.125rem);
+}
+
+.btn-outline-primary {
+  background-color: transparent;
+  color: var(--color-navy-blue); /* Navy blue for border text */
+  border: 0.125rem solid var(--color-navy-blue); /* 2px converted to rem */
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background-color: var(--color-navy-blue); /* Navy blue on hover */
+  color: var(--color-blanco); /* White on hover */
+  box-shadow: var(--shadow-md);
+  transform: translateY(-0.125rem);
+  outline: none;
+}
+
+/* --- Cards --- */
+.card {
+  background: var(--color-bg-card-light);
+  border: 0.0625rem solid var(--color-border-light); /* 1px converted to rem */
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-md);
+  padding: 1rem;
+  transition: var(--transition-ease);
+  color: var(--color-text-dark);
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-0.375rem); /* 6px converted to rem */
+  box-shadow: var(--shadow-lg);
+}
+
+.card-img-top {
+  border-radius: 0.6rem 0.6rem 0 0;
+  max-height: 16rem;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--color-primario);
+}
+
+.card-text {
+  color: var(--color-text-dark);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.card .price {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-negro); /* Price color in light mode: Black */
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* --- Ad Card --- */
+.ad-card {
+  border: 0.0625rem solid var(--color-border-light); /* Consistent with other cards */
+  border-radius: 0.75rem; /* Consistent with other cards */
+  padding: 0.75rem; /* 12px converted to rem */
+  width: 100%;
+  max-width: 100%;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistent font family */
+  background-color: var(--color-bg-card-light); /* Use CSS variable */
+  box-shadow: var(--shadow-md); /* Consistent shadow */
+  transition: var(--transition-ease); /* Consistent transition */
+}
+
+.ad-card:hover {
+  transform: translateY(-0.25rem); /* 4px converted to rem */
+  box-shadow: 0 0.375rem 1rem rgba(0, 0, 0, 0.08); /* 6px 16px converted to rem */
+}
+
+.ad-sponsored-label {
+  font-size: 0.75rem; /* 12px converted to rem */
+  color: var(--color-text-muted); /* Use CSS variable */
+  font-style: italic;
+  margin-bottom: 0.5rem; /* 8px converted to rem */
+}
+
+.ad-image-placeholder {
+  width: 100%;
+  min-height: 7.5rem; /* Sets a minimum height */
+  aspect-ratio: 16 / 9; /* Or the desired ratio, e.g., 4 / 3, 1 / 1 */
+  background-color: hsl(210, 10%, 95%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 0.625rem;
+  background-image: url('../images/ad-placeholder.svg'); /* Ensure this path is correct */
+  display: block;
+}
+.ad-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-primario); /* Use CSS variable */
+  margin-bottom: 0.375rem; /* 6px converted to rem */
+}
+
+.ad-description {
+  font-size: 0.875rem; /* 14px converted to rem */
+  color: var(--color-text-dark); /* Use CSS variable */
+  margin-bottom: 0.375rem; /* 6px converted to rem */
+}
+
+.ad-price {
+  font-size: 1.1rem;
+  color: var(--color-mint-green); /* Use mint green for price */
+  font-weight: bold;
+  margin-bottom: 0.625rem; /* 10px converted to rem */
+}
+
+.ad-button {
+  display: inline-block;
+  padding: 0.5rem 1rem; /* 8px 16px converted to rem */
+  background-color: var(--color-navy-blue); /* Use CSS variable for consistency */
+  color: var(--color-blanco);
+  text-decoration: none;
+  border-radius: 0.375rem; /* 6px converted to rem */
+  font-size: 0.875rem; /* 14px converted to rem */
+  font-weight: 500;
+  transition: var(--transition-ease);
+}
+
+.ad-button:hover,
+.ad-button:focus {
+  background-color: var(--color-accent); /* Use accent color on hover for better visibility */
+  color: var(--color-negro); /* Text color for better contrast with accent */
+}
+
+.ad-info {
+  margin-top: 0.625rem; /* 10px converted to rem */
+  font-size: 0.75rem; /* 12px converted to rem */
+  color: var(--color-text-muted); /* Use CSS variable */
+  border-top: 0.0625rem dashed var(--color-border-light); /* Use CSS variable, 1px converted to rem */
+  padding: 0.375rem; /* 6px converted to rem */
+  word-wrap: break-word;
+}
+
+/* Badge corrections for text wrapping */
+.badge {
+  white-space: normal; /* Ensures text wraps inside the badge */
+  word-break: break-word; /* Breaks long words if they don't fit */
+  display: inline-block; /* Allows width/height properties if needed */
+}
+
+/*---Forms---*/
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 0.0625rem solid var(--color-border-light); /* 1px converted to rem */
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: var(--color-text-dark);
+  background-color: var(--color-bg-card-light);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 0.1875rem rgba(var(--rgb-primary), 0.2); /* Converted to rem */
+  outline: none;
+}
+
+textarea {
+  min-height: 7.5rem; /* 120px converted to rem */
+  resize: vertical;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+  width: 15.625rem; /* 250px / 16px = 15.625rem */
+  background-color: var(--color-sidebar-bg); /* Dark blue for the sidebar */
+  color: var(--color-sidebar-text);
+  padding: 1.5rem 1rem;
+  border-right: 0.0625rem solid rgba(255, 255, 255, 0.1); /* Subtle white border for contrast */
+  transition: var(--transition-ease);
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar h4 {
+  color: var(--color-sidebar-text); /* Ensure sidebar titles are white */
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--color-sidebar-text); /* Keep sidebar link text white */
+  text-decoration: none;
+  border-radius: 0.4rem;
+  transition: var(--transition-ease);
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.1); /* A slight dark tint for links */
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background-color: hsla(36, 100%, 50%, 0.15); /* Accent orange tint on hover */
+  color: var(--color-sidebar-link-hover);
+  transform: translateX(0.3125rem); /* 5px converted to rem */
+}
+
+/* --- Footer --- */
+footer {
+  background-color: var(--color-sidebar-bg); /* Same dark blue as sidebar */
+  color: var(--color-text-light); /* Light text (white) */
+  padding: 2.5rem 1.5rem;
+  margin-top: 4rem;
+  border-top: 0.3125rem solid var(--color-accent); /* 5px converted to rem, top line in accent color (orange) */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 0.9rem;
+  box-shadow: 0 -0.25rem 0.75rem rgba(var(--rgb-black), 0.3); /* Converted to rem */
+}
+
+footer a {
+  color: var(--color-blanco); /* Ensures links are white */
+  text-decoration: none;
+  margin: 0 0.6rem;
+  transition: color 0.25s ease-in-out;
+}
+
+footer a:hover,
+footer a:focus {
+  color: var(--color-accent); /* Gold accent color on hover */
+  text-decoration: underline;
+  outline: none;
+}
+
+footer .social-icons {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 0.75rem;
+  justify-content: center; /* Horizontal centering */
+}
+
+footer .social-icons i {
+  font-size: 2rem;
+  color: var(--color-text-light); /* Social icons in white */
+  transition: color 0.25s ease-in-out, transform 0.3s ease;
+  cursor: pointer;
+}
+
+footer .social-icons i:hover {
+  color: var(--color-accent); /* Gold on hover */
+  transform: scale(1.1); /* Small visual increase */
+}
+
+/* --- Product Image --- */
+.product-image-container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.product-image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-lg);
+  object-fit: contain;
+}
+
+/* --- Accordion --- */
+.accordion-button {
+  font-weight: 700;
+  color: var(--color-primario);
+  background-color: transparent;
+  border: 0.0625rem solid var(--color-border-light); /* 1px converted to rem */
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  text-align: left;
+  transition: var(--transition-ease);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.accordion-button:hover {
+  background-color: rgba(var(--rgb-primary), 0.05);
+}
+
+.accordion-button:not(.collapsed) {
+  color: var(--color-blanco); /* Text white for contrast with primary background */
+  background-color: var(--color-primario);
+  border-color: var(--color-primario);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.accordion-content {
+  padding: 1rem 1.25rem;
+  border: 0.0625rem solid var(--color-border-light); /* 1px converted to rem */
+  border-top: none;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  background-color: var(--color-bg-card-light);
+  color: var(--color-text-dark);
+}
+
+/* --- Lists --- */
+.list-group {
+  list-style: none;
+  padding: 0;
+}
+
+.list-group-item {
+  padding: 0.75rem 1.25rem;
+  border: 0.0625rem solid var(--color-border-light); /* 1px converted to rem */
+  margin-bottom: -0.0625rem; /* -1px converted to rem */
+  background-color: var(--color-bg-card-light);
+  color: var(--color-text-dark);
+}
+
+.list-group-item:first-child {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.list-group-item:last-child {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  margin-bottom: 0;
+}
+
+.list-group-item-action {
+  cursor: pointer;
+  transition: var(--transition-ease);
+}
+
+.list-group-item-action:hover {
+  background-color: rgba(var(--rgb-primary), 0.05);
+  color: var(--color-primary-hover);
+  transform: translateX(0.3125rem); /* 5px converted to rem */
+}
+
+/* --- Article Content --- */
+.article-content {
+  max-width: 50rem; /* 800px / 16px = 50rem */
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  display: block;
+  box-shadow: var(--shadow-md);
+}
+
+.article-content table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 0.0625rem solid var(--color-border-light); /* 1px converted to rem */
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.article-content th,
+.article-content td {
+  border: 0.0625rem solid var(--color-border-light); /* 1px converted to rem */
+  padding: 1rem 1.25rem;
+  text-align: left;
+  vertical-align: middle;
+  font-size: 0.95rem;
+}
+
+.article-content th {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  font-weight: 600;
+}
+
+/* --- Alerts --- */
+.alert {
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.alert-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+/* Updated alerts with the new palette */
+.alert-warning {
+  background-color: hsl(40, 95%, 90%); /* Soft yellow */
+  border-color: hsl(40, 90%, 60%); /* More intense yellow */
+  color: hsl(40, 95%, 20%); /* Dark yellow text */
+}
+
+.alert-warning .alert-icon {
+  color: hsl(40, 90%, 60%);
+}
+
+.alert-info {
+  background-color: hsl(200, 90%, 90%); /* Soft sky blue */
+  border-color: hsl(200, 80%, 55%); /* More intense sky blue */
+  color: hsl(200, 95%, 20%); /* Dark blue text */
+}
+
+.alert-info .alert-icon {
+  color: hsl(200, 80%, 55%);
+}
+
+.alert-success {
+  background-color: hsl(120, 70%, 90%); /* Light green */
+  border-color: hsl(120, 60%, 50%); /* More intense green */
+  color: hsl(120, 70%, 20%); /* Dark green text */
+}
+
+.alert-success .alert-icon {
+  color: hsl(120, 60%, 50%);
+}
+
+.alert-danger {
+  background-color: hsl(0, 80%, 90%); /* Light red */
+  border-color: hsl(0, 70%, 60%); /* More intense red */
+  color: hsl(0, 80%, 20%); /* Dark red text */
+}
+
+.alert-danger .alert-icon {
+  color: hsl(0, 70%, 60%);
+}
+
+/* --- Navbar --- */
+.navbar {
+  background-color: var(--color-primario); /* Navbar background matching sidebar color */
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  color: var(--color-blanco); /* Ensure brand text is white */
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: -0.03em;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: var(--color-blanco); /* Set nav links to white */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-accent); /* Change hover to accent color for visibility */
+}
+
+/* --- Utility Classes --- */
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.d-block {
+  display: block;
+}
+.d-flex {
+  display: flex;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.align-items-center {
+  align-items: center;
+}
+
+.gap-1 {
+  gap: 0.5rem;
+}
+.gap-2 {
+  gap: 1rem;
+}
+.gap-3 {
+  gap: 1.5rem;
+}
+.gap-4 {
+  gap: 2rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 1rem;
+}
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 62rem) {
+  /* 992px / 16px = 62rem */
+  .container {
+    padding: 1.5rem 1rem;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+  h2 {
+    font-size: 1.8rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  .btn {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+
+  .navbar-nav {
+    display: none; /* Controlled by JS for mobile menu */
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 0.0625rem solid var(--color-border-light); /* 1px converted to rem */
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 48rem) {
+  /* 768px / 16px = 48rem */
+  .card {
+    padding: 1rem;
+  }
+
+  .ad-card {
+    padding: 1.5rem;
+  }
+
+  .alert {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .alert-icon {
+    margin-bottom: 0.5rem;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+}
+
+/* --- Dark Mode --- */
+body.dark-mode {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+  color: var(--color-accent); /* Headings use accent in dark mode */
+}
+
+body.dark-mode p {
+  color: var(--color-text-light);
+}
+
+body.dark-mode a {
+  color: var(--color-accent); /* Accent orange links in dark mode */
+}
+
+body.dark-mode a:hover,
+body.dark-mode a:focus {
+  color: var(--color-blanco); /* White on hover for dark mode links */
+}
+
+body.dark-mode .search-input {
+  background-color: var(--color-bg-card-dark);
+  border-color: var(--color-border-dark);
+  color: var(--color-text-light);
+}
+
+body.dark-mode .search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+body.dark-mode .search-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 0.1875rem hsla(36, 100%, 50%, 0.2); /* Converted to rem */
+  outline: none;
+}
+
+/* Buttons in Dark Mode */
+body.dark-mode .btn,
+body.dark-mode .btn-primary {
+  background-color: var(--color-navy-blue); /* Navy blue in dark mode */
+  color: var(--color-blanco); /* White text in dark mode */
+}
+
+body.dark-mode .btn:hover,
+body.dark-mode .btn-primary:hover,
+body.dark-mode .btn:focus,
+body.dark-mode .btn-primary:focus {
+  background-color: var(--color-primary-hover); /* Darker blue on hover in dark mode */
+}
+
+body.dark-mode .btn-secondary {
+  background-color: var(--color-text-muted); /* Muted color for secondary buttons */
+  color: var(--color-blanco);
+}
+
+body.dark-mode .btn-secondary:hover,
+body.dark-mode .btn-secondary:focus {
+  background-color: var(--color-primary-hover);
+}
+
+body.dark-mode .btn-success {
+  background-color: HSL(150, 60%, 30%); /* Dark mint green in dark mode */
+  color: var(--color-blanco);
+}
+
+body.dark-mode .btn-success:hover,
+body.dark-mode .btn-success:focus {
+  background-color: HSL(150, 70%, 20%);
+}
+
+body.dark-mode .btn-danger {
+  background-color: HSL(6, 70%, 40%); /* Dark coral red in dark mode */
+  color: var(--color-blanco);
+}
+
+body.dark-mode .btn-danger:hover,
+body.dark-mode .btn-danger:focus {
+  background-color: HSL(6, 80%, 30%);
+}
+
+body.dark-mode .btn-outline-primary {
+  background-color: transparent; /* Transparent background in dark mode */
+  color: var(--color-navy-blue); /* Navy blue for border text in dark mode */
+  border-color: var(--color-navy-blue); /* Navy blue border in dark mode */
+}
+
+body.dark-mode .btn-outline-primary:hover,
+body.dark-mode .btn-outline-primary:focus {
+  background-color: var(--color-navy-blue); /* Navy blue on hover in dark mode */
+  color: var(--color-blanco); /* White on hover in dark mode */
+}
+
+body.dark-mode .card {
+  background-color: var(--color-bg-card-dark);
+  border-color: var(--color-border-dark);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.4); /* Stronger shadow for dark cards */
+  color: var(--color-text-light); /* Ensures text is light */
+}
+
+body.dark-mode .card-title {
+  color: var(--color-accent);
+}
+
+body.dark-mode .card-text {
+  color: var(--color-text-light); /* Ensures text is visible */
+}
+
+body.dark-mode .card .price {
+  color: var(--color-text-light); /* Price color in dark mode: White */
+}
+
+body.dark-mode .ad-card {
+  background: var(--color-bg-card-dark); /* Use consistent dark card background */
+  border-color: var(--color-border-dark);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.4); /* Stronger shadow for dark cards */
+}
+
+body.dark-mode .ad-sponsored-label {
+  color: var(--color-text-muted);
+}
+
+body.dark-mode .ad-image-placeholder {
+  background-color: hsl(222, 10%, 15%); /* Darker placeholder in dark mode */
+}
+
+body.dark-mode .ad-title {
+  color: var(--color-accent);
+}
+
+body.dark-mode .ad-description {
+  color: var(--color-text-light);
+}
+
+body.dark-mode .ad-price {
+  color: HSL(150, 70%, 50%); /* Slightly brighter mint green for dark mode price */
+}
+
+body.dark-mode .ad-button {
+  background-color: var(--color-navy-blue);
+  color: var(--color-blanco);
+}
+
+body.dark-mode .ad-button:hover,
+body.dark-mode .ad-button:focus {
+  background-color: var(--color-primary-hover);
+  color: var(--color-blanco);
+}
+
+body.dark-mode .ad-info {
+  color: var(--color-text-muted);
+  border-color: var(--color-border-dark);
+}
+
+body.dark-mode .sidebar {
+  background-color: var(--color-sidebar-bg); /* Still dark blue */
+  color: var(--color-sidebar-text);
+  border-right-color: var(--color-border-dark);
+}
+
+body.dark-mode .sidebar h4 {
+  color: var(--color-sidebar-text); /* Ensure sidebar titles are white in dark mode */
+}
+
+body.dark-mode .sidebar-nav a {
+  background-color: HSL(210, 15%, 15%); /* Dark bluish gray for boxes in dark mode */
+  color: var(--color-sidebar-text); /* Ensure sidebar links are white in dark mode */
+}
+
+body.dark-mode .sidebar-nav a:hover,
+body.dark-mode .sidebar-nav a.active {
+  background-color: hsla(36, 100%, 50%, 0.15); /* Accent orange tint on hover */
+  color: var(--color-sidebar-link-hover);
+}
+
+body.dark-mode footer {
+  background-color: HSL(210, 25%, 8%); /* Darker footer background */
+  color: var(--color-blanco);
+}
+
+body.dark-mode footer a {
+  color: var(--color-accent); /* Footer links use accent in dark mode */
+}
+
+body.dark-mode footer a:hover,
+body.dark-mode footer a:focus {
+  color: var(--color-blanco); /* White on hover for dark mode footer links */
+}
+
+body.dark-mode footer .social-icons i {
+  color: var(--color-text-light);
+}
+
+body.dark-mode .social-icons i:hover {
+  color: var(--color-accent);
+}
+
+body.dark-mode .product-image-container img {
+  box-shadow: 0 0.375rem 0.9375rem rgba(0, 0, 0, 0.6); /* Stronger shadow in dark mode */
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="number"],
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: var(--color-bg-card-dark);
+  border-color: var(--color-border-dark);
+  color: var(--color-text-light);
+}
+
+body.dark-mode input[type="text"]:focus,
+body.dark-mode input[type="email"]:focus,
+body.dark-mode input[type="password"]:focus,
+body.dark-mode input[type="number"]:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 0.1875rem hsla(36, 100%, 50%, 0.2);
+}
+
+body.dark-mode .accordion-button {
+  background-color: var(--color-bg-card-dark);
+  border-color: var(--color-border-dark);
+  color: var(--color-accent);
+}
+
+body.dark-mode .accordion-button:hover {
+  background-color: hsla(36, 100%, 50%, 0.05);
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+  color: var(--color-bg-dark); /* Changed to dark background color for contrast with accent */
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+body.dark-mode .accordion-content {
+  background-color: var(--color-bg-card-dark);
+  border-color: var(--color-border-dark);
+  color: var(--color-text-light);
+}
+
+body.dark-mode .list-group-item {
+  background-color: var(--color-bg-card-dark);
+  border-color: var(--color-border-dark);
+  color: var(--color-text-light);
+}
+
+body.dark-mode .list-group-item-action:hover {
+  background-color: hsla(36, 100%, 50%, 0.05);
+  color: var(--color-accent);
+}
+
+body.dark-mode .article-content table {
+  border-color: var(--color-border-dark);
+}
+
+body.dark-mode .article-content th,
+body.dark-mode .article-content td {
+  border-color: var(--color-border-dark);
+}
+
+body.dark-mode .article-content th {
+  background-color: var(--color-primary-hover);
+  color: var(--color-accent);
+}
+
+/* Updated alerts with the new palette for dark mode */
+body.dark-mode .alert-warning {
+  background-color: hsl(40, 90%, 25%);
+  border-color: hsl(40, 90%, 40%);
+  color: hsl(40, 95%, 85%);
+}
+
+body.dark-mode .alert-warning .alert-icon {
+  color: hsl(40, 90%, 60%);
+}
+
+body.dark-mode .alert-info {
+  background-color: hsl(200, 90%, 25%);
+  border-color: hsl(200, 80%, 40%);
+  color: hsl(200, 95%, 85%);
+}
+
+body.dark-mode .alert-info .alert-icon {
+  color: hsl(200, 80%, 55%);
+}
+
+body.dark-mode .alert-success {
+  background-color: hsl(120, 60%, 20%);
+  border-color: hsl(120, 60%, 35%);
+  color: hsl(120, 70%, 85%);
+}
+
+body.dark-mode .alert-success .alert-icon {
+  color: hsl(120, 60%, 50%);
+}
+
+body.dark-mode .alert-danger {
+  background-color: hsl(0, 70%, 20%);
+  border-color: hsl(0, 70%, 35%);
+  color: hsl(0, 80%, 85%);
+}
+
+body.dark-mode .alert-danger .alert-icon {
+  color: hsl(0, 70%, 60%);
+}
+
+body.dark-mode .navbar {
+  background-color: var(--color-bg-dark);
+  border-bottom: 0.0625rem solid var(--color-border-dark); /* 1px converted to rem */
+}
+
+body.dark-mode .navbar-brand {
+  color: var(--color-accent);
+}
+
+body.dark-mode .nav-link {
+  color: var(--color-blanco); /* Ensure nav links are white in dark mode */
+}
+
+body.dark-mode .nav-link:hover {
+  color: var(--color-accent);
+}
+
+.adjusted-margin-top {
+  margin-top: 1rem !important;
+  margin-bottom: 3rem;
+}
+
+/* Specific overrides for footer text to ensure white color */
+footer,
+footer p,
+footer small,
+footer a,
+footer strong {
+  color: var(--color-blanco) !important;
+}
+
+/* --- Chatbot Toggle Button --- */
+#chatbot-toggle {
+  position: fixed;
+  bottom: 1.5625rem; /* 25px converted to rem */
+  right: 1.5625rem; /* 25px converted to rem */
+  width: 3.75rem; /* 60px converted to rem */
+  height: 3.75rem; /* 60px converted to rem */
+  border-radius: 50%;
+  background-color: var(--color-navy-blue); /* Using a variable for consistency */
+  color: var(--color-blanco); /* White text/icon */
+  border: none;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+  z-index: 1000;
+  font-size: 1.8rem;
+}
+
+#chatbot-toggle:hover {
+  background-color: var(--color-primary-hover); /* Darker blue on hover */
+  transform: scale(1.05); /* Slight scale for visual feedback */
+}
+
+/* --- Placeholder for Google Language Selector (if it's a custom element/div) --- */
+/* If you have a specific div or element that wraps your Google Language selector,
+   you can try to apply styles here. This is a generic example.
+   For actual Google Translate widgets, direct CSS styling is often limited. */
+.google-language-selector { /* Replace with actual selector if you have one */
+  display: flex; /* or 'block' depending on desired layout */
+  flex-direction: column; /* To make languages appear vertically */
+  align-items: flex-start; /* Align items to the start */
+  gap: 0.5rem; /* Space between language options */
+  font-family: 'Inter', sans-serif; /* Ensuring a readable font */
+  color: var(--color-text-dark); /* Default text color */
+}
+
+.google-language-selector a { /* Assuming language options are links */
+  color: var(--color-primario); /* Visible link color */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.google-language-selector a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+/* For dark mode */
+body.dark-mode .google-language-selector {
+  color: var(--color-text-light);
+}
+
+body.dark-mode .google-language-selector a {
+  color: var(--color-accent);
+}
+
+body.dark-mode .google-language-selector a:hover {
+  color: var(--color-blanco);
+}
+
+.testimonials-slider {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.testimonial-card {
+  scroll-snap-align: start;
+  background-color: #f8f9fa;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+}
+
+
+/* Puedes incluir esto en styles.css o admin_styles.css */
+.social-icon-wrapper i {
+    font-size: 20px !important; /* o el tamaño que desees */
+}

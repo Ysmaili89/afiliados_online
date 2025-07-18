@@ -1,0 +1,20 @@
+{# templates/partials/social_media.html #}
+<div class="social-icons d-flex justify-content-center align-items-center gap-3 mt-3">
+    {% set visible_links = social_media_links | selectattr('is_visible') | list %}
+
+    {% if visible_links %}
+        {% for link in visible_links %}
+            <a href="{{ link.url }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="Síguenos en {{ link.platform }}"
+               class="social-link text-white">
+                <div class="social-icon-wrapper">
+                    <i class="{{ link.icon_class or 'fa-solid fa-link' }} fa-lg" aria-hidden="true"></i>
+                </div>
+            </a>
+        {% endfor %}
+    {% else %}
+        <p class="no-social-links">No hay redes sociales visibles actualmente.</p>
+    {% endif %}
+</div>

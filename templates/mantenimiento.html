@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Sitio en mantenimiento{% endblock %}
+
+{% block content %}
+<main class="d-flex flex-column justify-content-center align-items-center vh-100 bg-light text-center">
+    <div class="container"> {# Changed 'contenedor' to 'container' for Bootstrap #}
+        <h1 class="display-4 fw-bold text-info mb-3">Estamos en mantenimiento</h1>
+        <p class="fs-5 text-secondary mb-4">
+            Estamos realizando mejoras en el sitio. Vuelve a visitarnos en unos momentos.
+        </p>
+        <a href="{{ url_for('publico.index') }}" class="btn btn-outline-primary btn-lg shadow-sm" aria-label="Intentar más tarde">
+            Volver al inicio
+        </a> {# Corrected from </uno> #}
+    </div> {# Corrected from </Div> #}
+</main> {# Corrected from </principal> #}
+{% endblock %} {# Corrected from {% Bloque final %} #}

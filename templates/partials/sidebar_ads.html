@@ -1,0 +1,70 @@
+<aside class="col-md-4">
+    <h3 class="mb-4">Publicidad</h3>
+
+    {# Ad Slot 1 - Dynamic #}
+    {% if adsense_client_id and adsense_slot_1 %}
+    <section class="ad-box mb-4 border rounded shadow-sm p-3 bg-light">
+        <span class="badge bg-warning text-dark mb-2">Anuncio patrocinado</span>
+        <ins class="adsbygoogle"
+             style="display:block; text-align:center;"
+             data-ad-client="{{ adsense_client_id }}"
+             data-ad-slot="{{ adsense_slot_1 }}"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        {# Optional: Display AdSense IDs for debugging or verification #}
+        <div class="mt-3 small text-muted">
+            <strong>ID Cliente:</strong> {{ adsense_client_id }}<br>
+            <strong>Slot:</strong> {{ adsense_slot_1 }}
+        </div>
+    </section>
+    {% endif %}
+
+    {# Ad Slot 2 - Alternative #}
+    {% if adsense_client_id and adsense_slot_2 %}
+    <section class="ad-box mb-4 border rounded shadow-sm p-3 bg-light">
+        <span class="badge bg-warning text-dark mb-2">Anuncio patrocinado</span>
+        <ins class="adsbygoogle"
+             style="display:block; text-align:center;"
+             data-ad-client="{{ adsense_client_id }}"
+             data-ad-slot="{{ adsense_slot_2 }}"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        {# Optional: Display AdSense IDs for debugging or verification #}
+        <div class="mt-3 small text-muted">
+            <strong>ID Cliente:</strong> {{ adsense_client_id }}<br>
+            <strong>Slot:</strong> {{ adsense_slot_2 }}
+        </div>
+    </section>
+    {% endif %}
+
+    {# Ad Slot 3 #}
+    {% if adsense_client_id and adsense_slot_3 %}
+    <section class="ad-box mb-4 border rounded shadow-sm p-3 bg-light">
+        <span class="badge bg-warning text-dark mb-2">Anuncio patrocinado</span>
+        <ins class="adsbygoogle"
+             style="display:block; text-align:center;"
+             data-ad-client="{{ adsense_client_id }}"
+             data-ad-slot="{{ adsense_slot_3 }}"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        {# Optional: Display AdSense IDs for debugging or verification #}
+        <div class="mt-3 small text-muted">
+            <strong>ID Cliente:</strong> {{ adsense_client_id }}<br>
+            <strong>Slot:</strong> {{ adsense_slot_3 }}
+        </div>
+    </section>
+    {% endif %}
+
+    {# IMPORTANT: Include the global AdSense script once in your main layout file #}
+    {# For example, in your base.html or a common footer/header template. #}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</aside>

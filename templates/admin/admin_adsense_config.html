@@ -1,0 +1,76 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Configurar AdSense - Afiliados Online{% endblock %}
+
+{% block content %} {# Corrected: 'contenido del bloque' -> 'block content' #}
+<h1 class="mb-4 text-primary fw-bold">Configuración de Google AdSense</h1>
+
+<form method="POST" action="{{ url_for('admin.admin_adsense_config') }}" class="bg-white p-4 rounded shadow-sm border">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="client_id" class="form-label">Client ID (ca-pub-...)</label>
+            <input type="text" class="form-control" id="client_id" name="client_id" value="{{ config.client_id }}"
+                   placeholder="ca-pub-xxxxxxxxxxxxxxxx" autocomplete="off" required>
+        </div> {# Corrected: </Div> -> </div> #}
+
+        <div class="col-md-6 mb-3">
+            <label for="slot_1" class="form-label">Ranura Anuncio 1</label>
+            <input type="text" class="form-control" id="slot_1" name="slot_1" value="{{ config.slot_1 }}"
+                   placeholder="Ej. 1234567890" autocomplete="off" required>
+        </div> {# Corrected: </Div> -> </div> #}
+
+        <div class="col-md-6 mb-3">
+            <label for="slot_2" class="form-label">Ranura Anuncio 2</label>
+            <input type="text" class="form-control" id="slot_2" name="slot_2" value="{{ config.slot_2 }}"
+                   placeholder="Ej. 0987654321" autocomplete="off" required>
+        </div> {# Corrected: </Div> -> </div> #}
+
+        <div class="col-md-6 mb-3">
+            <label for="slot_3" class="form-label">Ranura Anuncio 3</label>
+            <input type="text" class="form-control" id="slot_3" name="slot_3" value="{{ config.slot_3 }}"
+                   placeholder="Ej. 1122334455" autocomplete="off" required>
+        </div> {# Corrected: </Div> -> </div> #}
+    </div> {# Corrected: </Div> -> </div> #}
+
+    <button type="submit" class="btn btn-primary px-4"> 💾 Guardar Configuración</button>
+</form>
+
+<hr class="my-5">
+
+<h3 class="text-secondary mb-3">Vista Previa de Anuncios Google AdSense</h3>
+<p class="text-muted">Estos anuncios se mostrarán en tiempo real si tu configuración es válida y está activa en Google AdSense.</p>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ config.client_id }}"
+             data-ad-slot="{{ config.slot_1 }}"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> {# Corrected: '.empuje({}); </guión>' -> '.push({});</script>' #}
+    </div>
+
+    <div class="col-md-4">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ config.client_id }}"
+             data-ad-slot="{{ config.slot_2 }}"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> {# Corrected: '.empuje({}); </guión>' -> '.push({});</script>' #}
+    </div>
+
+    <div class="col-md-4">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ config.client_id }}"
+             data-ad-slot="{{ config.slot_3 }}"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> {# Corrected: '.empuje({}); </guión>' -> '.push({});</script>' #}
+    </div>
+</div>
+{% endblock %} {# Corrected: 'Bloque final' -> 'endblock' #}

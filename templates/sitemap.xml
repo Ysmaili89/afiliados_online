@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+    xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+{% for url in urls %} {# Corrected from para url en urls #}
+    <url>
+        <loc>{{ url.loc | escape }}</loc>
+        {% if url.lastmod %}
+        <lastmod>{{ url.lastmod }}</lastmod>
+        {% else %}
+        <lastmod>{{ today }}</lastmod> {# Corrected from hoy (assuming 'today' is the variable passed for the current date) #}
+        {% endif %}
+        <changefreq>{{ url.changefreq or 'weekly' }}</changefreq> {# Corrected from o 'semanal' #}
+        <priority>{{ url.priority or '0.5' }}</priority> {# Corrected from o '0.5' #}
+
+        {# Optional support for associated images (only if they exist) #}
+        {% if url.image %}
+        <image:image> {# Corrected from imagen:imagen #}
+            <image:loc>{{ url.image | escape }}</image:loc>
+        </image:image>
+        {% endif %}
+    </url>
+{% endfor %} {# Corrected from endpara #}
+</urlset>

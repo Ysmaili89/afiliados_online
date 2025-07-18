@@ -1,0 +1,92 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %} {# Corrected: contenido del bloque -> block content #}
+<div class="container-fluid"> {# Corrected: contenedor-fluido -> container-fluid #}
+    <h1 class="h3 mb-4 text-gray-800">Gestionar Mensajes de Contacto</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {# Corrected: con mensajes = get_flashed_messages(with_categories=verdadero) #}
+        {% if messages %} {# Corrected: si mensajes -> if messages #}
+            {% for category, message in messages %} {# Corrected: para categoría, mensaje en mensajes -> for category, message in messages #}
+                <div class="alert alert-{{ category }}" role="alert"> {# Corrected: alerta alerta-{{ categoría }} -> alert alert-{{ category }}, role="alerta" -> role="alert" #}
+                    {{ message }} {# Corrected: {{ mensaje }} -> {{ message }} #}
+                </div> {# Corrected: </Div> -> </div> #}
+            {% endfor %} {# Corrected: endpara -> endfor #}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card shadow mb-4"> {# Corrected: sombra de tarjeta -> card shadow #}
+        <div class="card-header py-3"> {# Corrected: cabecera-de-tarjeta -> card-header #}
+            <h6 class="m-0 font-weight-bold text-primary">Bandeja de Entrada</h6>
+        </div> {# Corrected: </Div> -> </div> #}
+        <div class="card-body"> {# Corrected: cuerpo-de-la-tarjeta -> card-body #}
+            <div class="table-responsive"> {# Corrected: tabla de respuesta -> table-responsive #}
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"> {# Corrected: tabla con borde de tabla -> table table-bordered #}
+                    <thead>
+                        <tr> {# Corrected: <Tr> -> <tr> #}
+                            <th>ID</th>
+                            <th>De</th>
+                            <th>Email</th>
+                            <th>Mensaje</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr> {# Corrected: </Tr> -> </tr> #}
+                    </thead>
+                    <tbody>
+                        {% for message in messages %}
+                        <tr class="{% if not message.is_read %}table-primary{% endif %} {% if message.is_archived %}table-secondary{% endif %}">
+                            <td>{{ message.id }}</td>
+                            <td>{{ message.name }}</td>
+                            <td>{{ message.email }}</td>
+                            <td> {# Corrected: <Td> -> <td> #}
+                                {{ message.message[:100] }}... {# Mostrar solo los primeros 100 caracteres #}
+                                {% if message.message|length > 100 %}
+                                    <a href="{{ url_for('admin.admin_view_message', message_id=message.id) }}" class="text-decoration-none">Ver más</a>
+                                {% endif %}
+                            </td> {# Corrected: </Td> -> </td> #}
+                            <td>{{ message.timestamp | datetime }}</td>
+                            <td> {# Corrected: <Td> -> <td> #}
+                                {% if message.is_read %}
+                                    <span class="badge bg-success">Leído</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">No Leído</span>
+                                {% endif %}
+                                {% if message.is_archived %}
+                                    <span class="badge bg-info">Archivado</span>
+                                {% endif %}
+                            </td> {# Corrected: </Td> -> </td> #}
+                            <td> {# Corrected: <Td> -> <td> #}
+                                <a href="{{ url_for('admin.admin_view_message', message_id=message.id) }}" class="btn btn-info btn-sm mb-1">Ver/Responder</a>
+
+                                <form action="{{ url_for('admin.admin_toggle_read_message', message_id=message.id) }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> {# ADDED CSRF TOKEN #}
+                                    <button type="submit" class="btn {% if message.is_read %}btn-secondary{% else %}btn-success{% endif %} btn-sm mb-1">
+                                        {% if message.is_read %}Marcar No Leído{% else %}Marcar Leído{% endif %}
+                                    </button>
+                                </form>
+
+                                <form action="{{ url_for('admin.admin_toggle_archive_message', message_id=message.id) }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> {# ADDED CSRF TOKEN #}
+                                    <button type="submit" class="btn {% if message.is_archived %}btn-warning{% else %}btn-info{% endif %} btn-sm mb-1">
+                                        {% if message.is_archived %}Desarchivar{% else %}Archivar{% endif %}
+                                    </button> {# Corrected: </botón> -> </button> #}
+                                </form> {# Corrected: </formulario> -> </form> #}
+
+                                <form action="{{ url_for('admin.admin_delete_message', message_id=message.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este mensaje permanentemente?');">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> {# ADDED CSRF TOKEN #}
+                                    <button type="submit" class="btn btn-danger btn-sm mb-1">Delete</button>
+                                </form> {# Corrected: </formulario> -> </form> #}
+                            </td> {# Corrected: </Td> -> </td> #}
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center">No hay mensajes de contacto.</td>
+                        </tr>
+                        {% endfor %} {# Corrected: endpara -> endfor #}
+                    </tbody>
+                </table> {# Corrected: </mesa> -> </table> #}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {# Corrected: Bloque final -> endblock #}

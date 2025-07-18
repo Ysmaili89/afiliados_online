@@ -1,0 +1,91 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Manage Advertisements - Online Affiliates{% endblock %}
+
+{% block content %} {# Corrected: contenido del bloque -> block content #}
+<div class="container-fluid"> {# Corrected: contenedor-fluido -> container-fluid #}
+    <h1 class="h3 mb-4 text-gray-800">Manage Advertisements</h1> {# Corrected: Administrar Anuncios -> Manage Advertisements #}
+
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{{ url_for('admin.admin_add_advertisement') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Advertisement {# Corrected: Añadir Nuevo Anuncio -> Add New Advertisement #}
+        </a>
+    </div> {# Corrected: </Div> -> </div> #}
+
+    <div class="card shadow mb-4"> {# Corrected: sombra de tarjeta mb-4 -> card shadow mb-4 #}
+        <div class="card-header py-3"> {# Corrected: cabecera-de-tarjeta py-3 -> card-header py-3 #}
+            <h6 class="m-0 font-weight-bold text-primary">Advertisement Listing</h6> {# Corrected: Listado de Anuncios -> Advertisement Listing #}
+        </div> {# Corrected: </Div> -> </div> #}
+        <div class="card-body"> {# Corrected: cuerpo-de-la-tarjeta -> card-body #}
+            <div class="table-responsive">
+                {% if advertisements %}
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type</th> {# Corrected: Tipo -> Type #}
+                            <th>Title</th> {# Corrected: Título -> Title #}
+                            <th>Active</th> {# Corrected: Activo -> Active #}
+                            <th>Associated Product</th> {# Corrected: Producto Asociado -> Associated Product #}
+                            <th>Dates</th> {# Corrected: Fechas -> Dates #}
+                            <th>Actions</th> {# Corrected: Acciones -> Actions #}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ad in advertisements %}
+                        <tr>
+                            <td>{{ ad.id }}</td>
+                            <td>{{ ad.type | capitalize }}</td>
+                            <td>{{ ad.title }}</td>
+                            <td>
+                                <span class="badge {% if ad.is_active %}bg-success{% else %}bg-danger{% endif %}">
+                                    {% if ad.is_active %}Yes{% else %}No{% endif %} {# Corrected: Sí -> Yes, No -> No #}
+                                </span>
+                            </td>
+                            <td>
+                                {% if ad.product %}
+                                    <a href="{{ url_for('admin.admin_edit_product', product_id=ad.product.id) }}" target="_blank">
+                                        {{ ad.product.nombre }}
+                                    </a>
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if ad.start_date and ad.end_date %}
+                                    {{ ad.start_date.strftime('%Y-%m-%d') }} to {{ ad.end_date.strftime('%Y-%m-%d') }} {# Corrected: a -> to #}
+                                {% elif ad.start_date %}
+                                    From {{ ad.start_date.strftime('%Y-%m-%d') }} {# Corrected: Desde -> From #}
+                                {% elif ad.end_date %}
+                                    Until {{ ad.end_date.strftime('%Y-%m-%d') }} {# Corrected: Hasta -> Until #}
+                                {% else %}
+                                    Always {# Corrected: Siempre -> Always #}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('admin.admin_edit_advertisement', ad_id=ad.id) }}" class="btn btn-info btn-sm me-1" title="Edit"> {# Corrected: Editar -> Edit #}
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ url_for('admin.admin_toggle_active_advertisement', ad_id=ad.id) }}" method="POST" class="d-inline">
+                                    <button type="submit" class="btn {% if ad.is_active %}btn-warning{% else %}btn-success{% endif %} btn-sm me-1" title="{% if ad.is_active %}Deactivate{% else %}Activate{% endif %}"> {# Corrected button titles #}
+                                        <i class="fas {% if ad.is_active %}fa-eye-slash{% else %}fa-eye{% endif %}"></i>
+                                    </button> {# Corrected: </botón> -> </button> #}
+                                </form>
+                                <form action="{{ url_for('admin.admin_delete_advertisement', ad_id=ad.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this advertisement? This action cannot be undone.');" > {# Corrected confirmation message #}
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Delete"> {# Corrected: Eliminar -> Delete #}
+                                        <i class="fas fa-trash"></i> {# Corrected: <i class="fa-trash"></i> -> <i class="fas fa-trash"></i> #}
+                                    </button> {# Corrected: </botón> -> </button> #}
+                                </form>
+                            </td> {# Corrected: </TD> -> </td> #}
+                        </tr>
+                        {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+                    </tbody>
+                </table> {# Corrected: </mesa> -> </table> #}
+                {% else %}
+                <p class="text-center">No advertisements registered yet.</p> {# Corrected: No hay anuncios registrados aún. -> No advertisements registered yet. #}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {# Corrected: Bloque final -> endblock #}

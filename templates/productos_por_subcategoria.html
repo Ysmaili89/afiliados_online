@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Productos de {{ subcat_name }} - Afiliados Online{% endblock %}
+
+{% block meta_description %}
+    Explora los mejores productos de {{ subcat_name }} con reseñas, comparativas, precios actualizados y enlaces directos de compra.
+{% endblock %}
+
+{% block meta_keywords %}
+    productos {{ subcat_name | lower }}, comprar {{ subcat_name | lower }}, análisis {{ subcat_name | lower }}, comparativas {{ subcat_name | lower }}, reseñas
+{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  {% if not productos %}
+    <meta name="robots" content="noindex,nofollow">
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<main class="container my-5" role="main" aria-labelledby="page-title">
+  <header class="mb-4">
+    <h1 id="page-title" class="mb-2">Productos en {{ subcat_name }}</h1>
+    <p class="lead text-secondary">Encuentra las mejores opciones en la categoría **{{ subcat_name }}**: recomendaciones, precios y enlaces verificados. </p>
+  </header>
+
+  {% if productos %}
+  <section class="row" aria-label="Lista de productos de {{ subcat_name }}">
+    {% for p in productos %}
+    <article class="col-md-6 col-lg-4 mb-4 d-flex" itemscope itemtype="https://schema.org/Product">
+      <div class="card flex-fill h-100 shadow-sm">
+        {% if p.imagen %}
+        <img src="{{ p.imagen }}" class="card-img-top" alt="Imagen de {{ p.nombre }}" itemprop="image" loading="lazy">
+        {% else %}
+        <img src="{{ url_for('static', filename='images/default-product.jpg') }}" class="card-img-top" alt="" loading="lazy" aria-hidden="true">
+        {% endif %}
+        <div class="card-body d-flex flex-column">
+          <h2 class="card-title h5" itemprop="name">{{ p.nombre }}</h2>
+          <p class="text-muted fw-semibold mb-2" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+            <span itemprop="priceCurrency" content="USD">$</span><span itemprop="price">{{ "%.2f" | format(p.precio) }}</span>
+          </p>
+          <p class="card-text" itemprop="description">{{ p.descripcion | truncate(100, True) }}</p>
+          <div class="mt-auto d-flex flex-wrap gap-2">
+            <a href="{{ url_for('publico.product_detail', slug=p.slug) }}" class="btn btn-outline-primary btn-sm" aria-label="Ver detalles de {{ p.nombre }}">Ver detalles</a>
+            <a href="{{ p.link }}" class="btn btn-success btn-sm" target="_blank" rel="sponsored noopener nofollow" aria-label="Comprar {{ p.nombre }}">Comprar</a>
+          </div>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </section>
+
+  {# Paginación simple #}
+  {% if total_pages > 1 %}
+  <nav aria-label="Paginación de productos en {{ subcat_name }}">
+    <ul class="pagination justify-content-center">
+      <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+        <a class="page-link" href="{{ url_for('publico.productos_por_subcategoria', subcat_name=subcat_name, page=page-1) }}" aria-label="Página anterior">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+
+      {% for pagenum in range(1, total_pages + 1) %}
+      <li class="page-item {% if pagenum == page %}active{% endif %}">
+        <a class="page-link" href="{{ url_for('publico.productos_por_subcategoria', subcat_name=subcat_name, page=pagenum) }}" aria-label="Página {{ pagenum }}">{{ pagenum }}</a>
+      </li>
+      {% endfor %}
+
+      <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+        <a class="page-link" href="{{ url_for('publico.productos_por_subcategoria', subcat_name=subcat_name, page=page+1) }}" aria-label="Página siguiente">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  {% endif %}
+
+  {% else %}
+  <div class="alert alert-warning text-center fs-5" role="alert">
+    No se encontraron productos disponibles en esta subcategoría.
+  </div>
+  {% endif %}
+
+  <div class="mt-5 text-center">
+    <a href="{{ url_for('publico.show_categorias') }}" class="btn btn-secondary btn-lg" aria-label="Volver a la página de categorías">
+      <i class="fas fa-arrow-left me-2" aria-hidden="true"></i>Volver a Categorías
+    </a>
+  </div>
+</main>
+{% endblock %}

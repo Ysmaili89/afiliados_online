@@ -1,0 +1,92 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Administrar Categorías - Afiliados Online{% endblock %}
+
+{% block content %} {# Corrected: contenido del bloque -> block content #}
+<h1 class="mb-1">Administrar Categorías</h1>
+<p class="text-muted mb-3">Gestiona las categorías principales y sus subcategorías para organizar correctamente los productos o artículos.</p>
+
+<a href="{{ url_for('admin.admin_add_category') }}" class="btn btn-success mb-4">
+  <i class="fas fa-plus-circle me-1"></i> Añadir Nueva Categoría Principal
+</a> {# Corrected: <un> -> </a> #}
+
+<div class="table-responsive"> {# Corrected: tabla de respuesta -> div class="table-responsive" #}
+  <table class="table table-bordered table-hover align-middle">
+    <thead class="table-dark">
+      <tr> {# Corrected: <Tr> -> <tr> #}
+        <th scope="col">#</th>
+        <th scope="col">Nombre de Categoría</th>
+        <th scope="col">Subcategorías</th>
+        <th scope="col">Acciones</th>
+      </tr> {# Corrected: </Tr> -> </tr> #}
+    </thead>
+    <tbody>
+      {% for category in categorias %}
+      <tr> {# Corrected: <Tr> -> <tr> #}
+        <th scope="row">{{ category.id }}</th>
+        <td> {# Corrected: <Td> -> <td> #}
+          <strong>{{ category.nombre }}</strong>
+        </td> {# Corrected: </Td> -> </td> #}
+        <td> {# Corrected: <Td> -> <td> #}
+          <details>
+            <summary class="mb-2">Ver subcategorías ({{ category.subcategorias | length }})</summary>
+            <ul class="list-unstyled mb-0">
+              {% for subcategory in category.subcategorias %}
+              <li class="mb-1">
+                <strong>{{ subcategory.nombre }}</strong> (ID: {{ subcategory.id }})
+
+                <div class="btn-group btn-group-sm ms-2" role="group" aria-label="Acciones Subcategoría {{ subcategory.nombre }}">
+                  <a href="{{ url_for('admin.admin_edit_subcategory', category_id=category.id, subcategory_id=subcategory.id) }}"
+                     class="btn btn-outline-info"
+                     title="Editar Subcategoría {{ subcategory.nombre }}">
+                    <i class="fas fa-edit"></i>
+                  </a> {# Corrected: </un> -> </a> #}
+                  <form action="{{ url_for('admin.admin_delete_subcategory', category_id=category.id, subcategory_id=subcategory.id) }}"
+                        method="POST"
+                        class="d-inline"
+                        onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta subcategoría?');">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> {# ADDED CSRF TOKEN #}
+                    <button type="submit" class="btn btn-outline-danger" title="Eliminar Subcategoría">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </form>
+                </div> {# Corrected: </Div> -> </div> #}
+              </li>
+              {% else %}
+              <li>No hay subcategorías.</li>
+              {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+            </ul>
+            <a href="{{ url_for('admin.admin_add_subcategory', category_id=category.id) }}"
+               class="btn btn-sm btn-outline-success mt-2">
+              <i class="fas fa-plus"></i> Añadir Subcategoría
+            </a>
+          </details>
+        </td>
+        <td>
+          <div class="btn-group btn-group-sm" role="group" aria-label="Acciones Categoría {{ category.nombre }}">
+            <a href="{{ url_for('admin.admin_edit_category', category_id=category.id) }}"
+               class="btn btn-outline-primary"
+               title="Editar Categoría Principal {{ category.nombre }}">
+              <i class="fas fa-edit"></i> {# Corrected: <i class="fa-edit"></i> -> <i class="fas fa-edit"></i> (assuming font-awesome, "fa-edit" is usually part of "fas fa-edit") #}
+            </a>
+            <form action="{{ url_for('admin.admin_delete_category', category_id=category.id) }}"
+                  method="POST" {# Corrected: método="PUBLICACIÓN" -> method="POST" #}
+                  class="d-inline" {# Corrected: class="d-en línea" -> class="d-inline" #}
+                  onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta categoría principal y sus subcategorías?');" >
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> {# ADDED CSRF TOKEN #}
+              <button type="submit" class="btn btn-outline-danger" title="Eliminar Categoría Principal">
+                <i class="fas fa-trash-alt"></i> {# Corrected: <i class="fa-trash-alt"></i> -> <i class="fas fa-trash-alt"></i> #}
+              </button> {# Corrected: </botón> -> </button> #}
+            </form> {# Corrected: </formulario> -> </form> #}
+          </div>
+        </td> {# Corrected: </TD> -> </td> #}
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" class="text-center">No hay categorías registradas.</td>
+      </tr>
+      {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+    </tbody>
+  </table> {# Corrected: </mesa> -> </table> #}
+</div>
+{% endblock %} {# Corrected: {% Bloque final %} -> {% endblock %} #}

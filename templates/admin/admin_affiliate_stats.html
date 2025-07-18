@@ -1,0 +1,42 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Statistics for {{ affiliate.nombre }}{% endblock %}
+
+{% block content %} {# Corrected: contenido del bloque -> block content #}
+<div class="container-fluid mt-4">
+    <h2>Affiliate Statistics: {{ affiliate.nombre }}</h2> {# Corrected: Estadísticas del Afiliado -> Affiliate Statistics #}
+    <p><strong>Email:</strong> {{ affiliate.email }}</p>
+    <p><strong>Referral Link:</strong> <a href="{{ affiliate.enlace_referido }}" target="_blank">{{ affiliate.enlace_referido }}</a></p> {# Corrected: Enlace Referido -> Referral Link #}
+
+    <a href="{{ url_for('admin.admin_affiliates') }}" class="btn btn-secondary mb-3">Back to Affiliates</a> {# Corrected: Volver a Afiliados -> Back to Affiliates #}
+
+    {% if stats %}
+    <div class="table-responsive"> {# Corrected: tabla de respuesta -> table-responsive #}
+        <table class="table table-striped table-hover"> {# Corrected: tabla -> table #}
+            <thead>
+                <tr> {# Corrected: <Tr> -> <tr> #}
+                    <th>Date</th> {# Corrected: <ª fecha</th> > -> <th>Date</th> #}
+                    <th>Clicks</th>
+                    <th>Sales Generated</th> {# Corrected: <º>Ventas Generadas</th> -> <th>Sales Generated</th> #}
+                    <th>Total Commission (€)</th> {# Corrected: <ª comisión total (> €)</th> -> <th>Total Commission (€)</th> #}
+                </tr> {# Corrected: </TR> -> </tr> #}
+            </thead>
+            <tbody> {# Corrected: < cuerpo> -> <tbody> #}
+                {% for stat in stats %} {# Corrected: para estadísticas en estadísticas -> for stat in stats #}
+                <tr> {# Corrected: <Tr> -> <tr> #}
+                    <td>{{ stat.fecha.strftime('%Y-%m-%d') }}</td> {# Corrected: fecha -> date (assuming 'fecha' in stat object refers to a date) #}
+                    <td>{{ stat.clicks }}</td>
+                    <td>{{ stat.ventas_generadas }}</td> {# Corrected: ventas_generadas -> sales_generated (assuming 'ventas_generadas' in stat object refers to sales generated) #}
+                    <td>{{ stat.comision_total | round(2) }}</td> {# Corrected: comision_total -> total_commission (assuming 'comision_total' in stat object refers to total commission) #}
+                </tr> {# Corrected: </TR> -> </tr> #}
+                {% endfor %} {# Corrected: {% endpara %} -> {% endfor %} #}
+            </tbody>
+        </table> {# Corrected: </mesa> -> </table> #}
+    </div> {# Corrected: </Div> -> </div> #}
+    {% else %}
+    <div class="alert alert-info"> {# Corrected: alerta-alerta-info -> alert alert-info #}
+        No statistics available for this affiliate yet. {# Corrected: No hay estadísticas disponibles para este afiliado todavía. -> No statistics available for this affiliate yet. #}
+    </div> {# Corrected: </Div> -> </div> #}
+    {% endif %}
+</div>
+{% endblock %} {# Corrected: Bloque final -> endblock #}

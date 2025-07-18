@@ -1,0 +1,59 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Acceso al Panel de Administración - Afiliados Online{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h3 class="mb-0">Acceso al Panel de Administración</h3>
+            </div>
+            <div class="card-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" tabindex="0" aria-live="polite">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('admin.admin_login') }}" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label", for="username") }}
+                        {{ form.username(class="form-control", id="username", autofocus=True, autocomplete="username", aria_describedby="usernameHelp", required=True) }}
+                        <div id="usernameHelp" class="form-text">Introduce tu nombre de usuario.</div>
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.username.errors[0] }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label", for="password") }}
+                        {{ form.password(class="form-control", id="password", autocomplete="current-password", required=True) }}
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.password.errors[0] }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center text-muted small">
+                &copy; {{ current_year }} Afiliados Online. Todos los derechos reservados.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

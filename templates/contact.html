@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}Contacto - Afiliados Online{% endblock %}
+{% block meta_description %}Contáctanos para cualquier consulta, sugerencia o colaboración. Estamos aquí para ayudarte a encontrar la mejor información.{% endblock %}
+{% block meta_keywords %}contacto, formulario de contacto, preguntas, soporte, colaboración, atención al cliente Afiliados Online{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <header class="mb-4 text-center animate__animated animate__fadeInDown">
+        <h1 class="mb-2 fw-bold">Contáctanos</h1>
+        <p class="lead">¿Tienes alguna pregunta, sugerencia o deseas colaborar? Estamos aquí para ayudarte y escucharte.</p>
+    </header>
+
+    {# Flash messages for success or other alerts #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages-container mb-4">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% elif success %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>¡Gracias!</strong> Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo pronto.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+
+    <form method="post" novalidate aria-label="Formulario de contacto" class="p-4 border rounded shadow-sm bg-light animate__animated animate__fadeInUp" role="form" autocomplete="off">
+        {# CSRF Token for Flask-WTF or similar if you are using it. Add this if your backend expects it. #}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre completo</label>
+            <input
+                type="text"
+                class="form-control {% if errors.nombre %}is-invalid{% endif %}"
+                id="nombre"
+                name="nombre"
+                required
+                aria-describedby="nombreHelp"
+                placeholder="Ej: Juan Pérez"
+                value="{{ request.form.nombre or '' }}"
+                autofocus
+            >
+            <div id="nombreHelp" class="form-text">Nos ayudará a personalizar nuestra respuesta.</div>
+            {% if errors.nombre %}
+            <div class="invalid-feedback">{{ errors.nombre }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input
+                type="email"
+                class="form-control {% if errors.email %}is-invalid{% endif %}"
+                id="email"
+                name="email"
+                required
+                aria-describedby="emailHelp"
+                placeholder="ejemplo@correo.com"
+                value="{{ request.form.email or '' }}"
+            >
+            <div id="emailHelp" class="form-text">Nunca compartiremos tu correo con terceros. Prometido.</div>
+            {% if errors.email %}
+            <div class="invalid-feedback">{{ errors.email }}</div>
+            {% endif %}
+        </div>
+
+        {# Honeypot field for spam prevention #}
+        <div class="visually-hidden" aria-hidden="true">
+            <label for="fax_number">Número de fax (no rellenar)</label>
+            <input type="text" id="fax_number" name="fax_number" tabindex="-1" autocomplete="off" value="">
+        </div>
+
+        <div class="mb-3">
+            <label for="mensaje" class="form-label">Mensaje</label>
+            <textarea
+                class="form-control {% if errors.mensaje %}is-invalid{% endif %}"
+                id="mensaje"
+                name="mensaje"
+                rows="6"
+                required
+                placeholder="Escribe tu consulta o propuesta detalladamente..."
+            >{{ request.form.mensaje or '' }}</textarea>
+            {% if errors.mensaje %}
+            <div class="invalid-feedback">{{ errors.mensaje }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" aria-label="Enviar mensaje">
+            <i class="fas fa-paper-plane me-2" aria-hidden="true"></i>Enviar mensaje
+        </button>
+    </form>
+
+    {# Optional: Add contact information or alternative contact methods below the form #}
+    <section class="mt-5 text-center">
+        <h2 class="mb-3 fw-bold">Otras formas de contactarnos</h2>
+        <p class="fs-5">
+            <i class="fas fa-envelope me-2"></i> Email: <a href="mailto:info@afiliadosonline.com" class="text-decoration-none text-primary">info@afiliadosonline.com</a>
+        </p>
+        <p class="text-muted"><small>Responderemos a tu correo electrónico lo antes posible.</small></p>
+        {# You could add phone, social media links, or office hours if applicable #}
+    </section>
+
+</div>
+
+{# Custom Styles for dark mode for this page #}
+<style>
+    body.dark-mode .bg-light {
+        background-color: #2c2c2c !important;
+        color: #e0e0e0;
+        border-color: #444 !important; /* Corrected from color-de-borde */
+    }
+    body.dark-mode .form-label {
+        color: #e0e0e0;
+    }
+    body.dark-mode .form-control {
+        background-color: #3a3a3a; /* Corrected from color de fondo */
+        color: #e0e0e0;
+        border-color: #555; /* Corrected from color del borde */
+    }
+    body.dark-mode .form-control::placeholder { /* Corrected spacing */
+        color: #bbb;
+    }
+    body.dark-mode .form-text {
+        color: #bbb !important; /* Corrected from !importante */
+    }
+    body.dark-mode .invalid-feedback {
+        color: #dc3545 !important; /* Mantener el texto de error claro */ /* Corrected from !importante */
+    }
+    body.dark-mode .alert-success {
+        background-color: #1a472a !important; /* Verde más oscuro para el éxito del modo oscuro */ /* Corrected from color de fondo */
+        color: #d1e7dd !important; /* Corrected from !importante */
+        border-color: #28a745 !important;
+    }
+    body.dark-mode a.text-primary {
+        color: #79a6ed !important; /* Color primario más claro para enlaces en modo oscuro */ /* Corrected from !importante */
+    }
+</style>
+{% endblock %}
